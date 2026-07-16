@@ -9,8 +9,11 @@ export default defineConfig({
   migrations: {
     path: "prisma/migrations",
   },
-  engine: "classic",
   datasource: {
-    url: env("DATABASE_URL"),
+    // For local SQLite:
+    url: env("DATABASE_URL") || "file:./dev.db", 
+    
+    // OR if you are using Turso:
+    // url: env("DATABASE_URL"), // e.g. libsql://your-db.turso.io
   },
 });

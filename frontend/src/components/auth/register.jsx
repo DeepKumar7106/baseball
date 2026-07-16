@@ -24,7 +24,7 @@ export default function Register () {
             // if the username is valid and pw are confirmed, send data to backend
 
             // define the packet (address and msg)
-            const response = await fetch("http://localhost:3000/api/register", {
+            const response = await fetch("http://localhost:5000/api/register", {
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",
@@ -49,7 +49,6 @@ export default function Register () {
         <main id="registerMain" className="form-main">
             <form onSubmit={handleSubmit} id="registerForm">
                 <h1 id="registerFormHeading">Register</h1>
-                {formError && <span>{formError}</span>}
                 <input 
                     type="text" 
                     id="registerInputTextUsername" 
