@@ -1,0 +1,128 @@
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+@use 'sass:color';
+
+    // &__ball-slider {
+    //     --slider-len : 4vh;
+    //     height: var(--slider-len);
+    //     aspect-ratio: 2 / 1;
+    //     background-image: linear-gradient(160deg, color.adjust($color-light, $lightness:10%), $color-light, color.adjust($color-light, $lightness:-40%));
+    //     border-radius: var(--slider-len);
+    //     box-shadow: 2px 2px 4px color.adjust($color-shadow-dark, $lightness:5%),
+    //                 3px 3px 6px color.adjust($color-shadow-dark, $lightness:10%),
+    //                 5px 5px 10px color.adjust($color-shadow-dark, $lightness:15%, $alpha: 0.8),
+    //                 20px 20px 40px color.adjust($color-shadow-dark, $lightness:15%, $alpha: 0.8),
+    //     ;
+    //     position: relative;
+
+    //     &::after,
+    //     &::before {
+    //         content: '';
+    //         position: absolute;
+    //         width: 41%;
+    //         height: 80%;
+    //         top: 10%;
+    //         border-radius: 100%;
+    //     }
+        
+    //     &::after {
+    //         background-image: linear-gradient(145deg, color.adjust($color-light, $lightness:-10%), $color-light, color.adjust($color-light, $lightness:10%));
+    //         left: 5%;
+    //         box-shadow: inset 1px 1px 3px color.adjust($color-shadow-dark, $lightness:20%);
+    //     }
+        
+    //     &::before {
+    //         background-image: linear-gradient(145deg, color.adjust($color-light, $lightness:-30%), $color-light, color.adjust($color-light, $lightness:10%));
+    //         right: 5%;
+    //         box-shadow: 2px 2px 6px color.adjust($color-shadow-dark, $lightness:10%);
+    //     }
+    // }
+
+// Component Class mapping your styles onto the thumb selector
+.custom-range-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  // Define tracking variables within scope
+  --slider-len: 4vh;
+  --track-height: 8px; 
+
+  // =========================================================
+  // CHROME, SAFARI, EDGE, OPERA
+  // =========================================================
+  &::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    
+    // Applying your shape structural variables
+    height: var(--slider-len);
+    aspect-ratio: 2 / 1;
+    border-radius: var(--slider-len);
+    
+    // Applying your complex gradient backgrounds
+    background-image: linear-gradient(
+      160deg, 
+      color.adjust($color-light, $lightness: 10%), 
+      $color-light, 
+      color.adjust($color-light, $lightness: -40%)
+    );
+    
+    // Applying your nested shadow setup
+    box-shadow: 
+      2px 2px 4px color.adjust($color-shadow-dark, $lightness: 5%),
+      3px 3px 6px color.adjust($color-shadow-dark, $lightness: 10%),
+      5px 5px 10px color.adjust($color-shadow-dark, $lightness: 15%, $alpha: 0.8),
+      20px 20px 40px color.adjust($color-shadow-dark, $lightness: 15%, $alpha: 0.8);
+
+    // CRITICAL WEBKIT FIX: Centers your 4vh thumb across a standard track height line
+    margin-top: calc((var(--track-height) / 2) - (var(--slider-len) / 2));
+  }
+
+  // =========================================================
+  // FIREFOX
+  // =========================================================
+  &::-moz-range-thumb {
+    border: none; // Disables default gecko profile borders
+    
+    height: var(--slider-len);
+    aspect-ratio: 2 / 1;
+    border-radius: var(--slider-len);
+    
+    background-image: linear-gradient(
+      160deg, 
+      color.adjust($color-light, $lightness: 10%), 
+      $color-light, 
+      color.adjust($color-light, $lightness: -40%)
+    );
+    
+    box-shadow: 
+      2px 2px 4px color.adjust($color-shadow-dark, $lightness: 5%),
+      3px 3px 6px color.adjust($color-shadow-dark, $lightness: 10%),
+      5px 5px 10px color.adjust($color-shadow-dark, $lightness: 15%, $alpha: 0.8),
+      20px 20px 40px color.adjust($color-shadow-dark, $lightness: 15%, $alpha: 0.8);
+  }
+
+  // =========================================================
+  // THE TRACK
+  // =========================================================
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: var(--track-height);
+    background: #e2e8f0;
+    border-radius: var(--track-height);
+  }
+
+  &::-moz-range-track {
+    width: 100%;
+    height: var(--track-height);
+    background: #e2e8f0;
+    border-radius: var(--track-height);
+  }
+}

@@ -1,0 +1,9 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+body {
+    @include flex-center(row);
+    // background: radial-gradient($color-light, $color-shadow-light, $color-shadow-dark);
+    font-family: $font-main;
+    width: 100vw;
+}

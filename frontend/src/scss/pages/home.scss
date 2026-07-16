@@ -1,0 +1,218 @@
+@use 'sass:color';
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+@use '../components/sliderthumb.scss';
+
+
+
+body:has(.home-main) {
+    overflow-x: hidden;
+}
+
+.home-main {
+    @include flex-center(column);
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    gap: 1rem;
+}
+
+.section__hero {
+    @include flex-center(column);
+    height: 100vh;
+    width: 100%;
+    anchor-name: --hero;
+    
+    &__text {
+        // font-family: $kona;
+        font-size: 15vw;
+        font-weight: 900;
+        min-height: 50%;
+        padding: 1rem;
+        text-align: center;
+        text-transform: uppercase;
+        width: 100%;
+        color: $color-light;
+        background: $color-primary;
+        
+        // text-shadow: 5px 5px 30px $color-shadow-dark;
+    }
+    
+    &__cta {
+        position-anchor: --hero;
+        position: absolute;
+        
+        --cta-size: 15vh;
+        // color: azure;
+        box-shadow: 5px 5px 10px $color-shadow-dark;
+        
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        background-color: yellow;
+        font-size: var(--cta-size);
+        height: var(--cta-size);
+        border-radius: var(--cta-size);
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        
+        &:hover {
+            --cta-size: 20vh;
+            box-shadow: 5px 5px 30px $color-shadow-dark;
+        }
+    }
+}
+
+.base {
+    display: grid;
+    align-content: end;
+    
+    background: $color-light;
+    color: $color-primary;
+    box-shadow: -5px -5px 10px $color-shadow-dark inset;
+}
+
+.ball {
+        box-shadow: 0 5px 5px $color-shadow-dark inset,
+                    5px 5px 10px #9c7df1a2 inset,
+                    -5px -5px 10px $color-dark inset
+        ;
+    }
+    
+.section__typography {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 50vw;
+
+
+
+    grid-template-areas: 
+        "select toss play" 
+        "information information information" 
+    ;
+    gap: 1rem;
+    place-items: center;
+
+    & .method {
+        @include flex-center(row);
+        aspect-ratio: 1 / 1;
+        background: linear-gradient(145deg, color.adjust($color-light, $lightness: 40%), $color-light, color.adjust($color-light, $lightness: -40%) );
+        border-radius: 10vw;
+        font-size: $font-size-base;
+        text-transform: uppercase;
+        font-weight: 700;
+        // font-family: Arial, Helvetica, sans-serif;
+        height: 10vw;
+        justify-self: center;
+        transition: hover 3000ms cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 10px 10px 20px $color-shadow-dark,
+        -10px -10px 20px $color-shadow-light;
+        
+        &:active {
+            background: linear-gradient(145deg, color.adjust($color-light, $lightness: -40%), $color-light, color.adjust($color-light, $lightness: 40%) );
+            box-shadow: 10px 10px 20px $color-shadow-dark,
+            -10px -10px 20px $color-shadow-light;
+        }
+    }
+
+    &__select {
+        grid-area: select;
+    }
+
+    &__toss {
+        grid-area: toss;
+    }
+
+    &__play {
+        grid-area: play;
+    }
+
+    &__information {
+        grid-area: information;
+        height: 30vh;
+        width: 80%;
+        background: black;
+        border-radius: 5vh;
+    }
+
+}
+
+.section__game {
+    width: 50%;
+    justify-items: center;    
+    // &__mode-wrapper {
+    // }
+    
+    &__buttons {
+        --home-mode-length: 10vw;
+        @include flex-center(row);
+        background: yellow;
+        border-radius: var(--home-mode-length);
+        gap: 1rem;
+        margin-block: 5vw;
+        padding: 1vw;
+        width: fit-content;
+        
+        box-shadow: inset 5px 5px 20px 1px $color-shadow-dark, 
+        5px 5px 23px 0px $color-shadow-dark;
+        
+        
+        & .game-mode {
+            anchor-scope: --home-modes-single;
+            position: relative;
+            
+            & .mode-button {
+                height: var(--home-mode-length);
+                width: var(--home-mode-length);
+                border-radius: var(--home-mode-length);
+                background: $color-primary;
+                anchor-name: --home-modes-single;
+                box-shadow:  5px 5px 20px $color-shadow-dark,
+                5px 5px 5px color.adjust($color-primary, $lightness: 20%) inset;
+                
+                &:active {
+                    transform: translate(5px, 5px);
+                }
+            }
+            
+            & .mode-label {
+                position: absolute;
+                position-anchor: --home-modes-single;
+                position-area: bottom center; 
+                margin-top: 11vw;
+                text-align: center;
+                
+                font-size: $font-size-small;
+                padding: 0.5rem;
+                width: 100%;
+            }
+            
+        }
+    }
+}    
+
+.section__scoreboard {
+    justify-items: center;
+    text-align: center;
+    width: 50%;
+
+    &__heading {
+        border-bottom: 1px solid $color-primary;
+        margin-bottom: 1rem;
+        width: 50%;
+    }
+
+    table {
+        font-size: $font-size-small;
+        width: 50%;
+        
+        & td, 
+        & th {
+            padding: 0.5rem 1rem;
+        }
+        
+        & thead th{
+            border-bottom: 2px solid $color-secondary;
+        }
+    
+    }
+}

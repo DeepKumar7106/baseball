@@ -1,0 +1,61 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use 'sass:color';
+
+nav {
+    @include flex-center(row);
+    background: $color-light;
+    // background: linear-gradient(to right, $color-dark, $color-dark-accent, $color-shadow-dark, $color-shadow-light, $color-light, $color-light, $color-light);
+    border-radius: 100vh;
+    box-shadow: 10px 10px 25px $color-shadow-dark,
+                -5px -5px 20px $color-shadow-light,
+                5px 5px 20px $color-shadow-light inset;
+    justify-content: space-between;
+    margin: 1rem auto;
+    padding: 0.2rem;
+    position: fixed;
+    width: 50vw;
+}
+
+.nav-logo img {
+        height: 50px;
+        aspect-ratio: 1 / 1 ;
+        object-fit: cover;
+}
+
+.nav-ul {
+    @include flex-center(row);
+    list-style: none;
+    margin: 0.5rem;
+}
+
+.nav-li {
+    border: none;
+    border-radius: 10vh;
+    padding: 0.5rem;
+}
+
+.nav-li a {
+    color: $color-dark;
+    font-size: $font-size-base;
+    margin: 0.5rem 1rem;
+    text-decoration: none;
+}
+
+.active {
+    background: $color-primary;
+    box-shadow: 5px 5px 10px color.adjust($color-primary, $lightness: -25%) inset,
+                -2px -2px 10px color.adjust($color-primary, $lightness: 25%) inset;
+                
+                & a {
+                    color: $color-light;
+                }
+            }
+            
+.play {
+    background: $color-secondary;
+    box-shadow: 5px 5px 10px color.adjust($color-secondary, $lightness: -25%),
+                -2px -2px 10px color.adjust($color-secondary, $lightness: -25%) inset,
+                2px 2px 10px color.adjust($color-secondary, $lightness: 25%) inset, 
+                -2px -2px 10px color.adjust($color-secondary, $lightness: 25%); 
+}

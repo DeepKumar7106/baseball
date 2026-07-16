@@ -1,0 +1,50 @@
+@use './functions';
+
+// Colors
+$color-primary: #3245ec;
+$color-dark: #1a1a1a;
+$color-dark-accent: #444444;
+$color-light: #f6f6f6;
+$color-secondary: #91ff29;
+
+// Box shadow colors
+$color-shadow-dark: #444444aa;
+$color-shadow-light: #f6f6f6;
+
+
+// Fonts and Sizes
+$font-main: 'Helvetica Neue', Arial, sans-serif;
+// $font-size-base: 1.5rem; 
+// $font-size-small: 1rem; 
+// $font-size-large: 2rem;
+// $font-size-xlarge: 3rem;
+// $font-size-xxlarge: 5rem;
+
+$kona: 'Kona', sans-serif;
+@font-face {
+  font-family: 'Kona';
+  src: url('/fonts/Kona-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+$font-size-small: clamp(0.875rem, #{"0.75rem + 0.5vw"}, 1.125rem);
+$font-size-base: clamp(1.25rem, #{"1.1rem + 0.8vw"}, 1.625rem);
+$font-size-large: clamp(1.5rem, #{"1.25rem + 1.2vw"}, 2rem);
+$font-size-xlarge: clamp(2rem, #{"1.5rem + 2.5vw"}, 3rem);
+$font-size-xxlarge: clamp(3rem, #{"2rem + 4.5vw"}, 5rem);
+
+// $font-size-small:   fluid-clamp(0.875rem, 1.125rem); 
+// $font-size-base:    fluid-clamp(1.25rem, 1.75rem);   
+// $font-size-large:   fluid-clamp(2rem, 3rem);    
+// $font-size-xlarge:  fluid-clamp(3.25rem, 4rem);     
+// $font-size-xxlarge: fluid-clamp(4.5rem, 6rem);
+
+// Breakpoints 
+$breakpoints: (
+  'small': 576px,
+  'medium': 768px,
+  'large': 992px,
+);

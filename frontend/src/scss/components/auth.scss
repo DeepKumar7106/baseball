@@ -1,0 +1,94 @@
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+@use 'sass:color';
+
+.form-main {
+    @include flex-center(row);
+    width: 100vw;
+    height: 100vh;
+}
+
+body:has(.form-main) nav{
+    display: none;
+}
+
+#registerCheckboxWrapper {
+    @include flex-center(row);
+    color: $color-shadow-dark;
+    font-size: $font-size-small;
+    flex-direction: row-reverse;
+    margin-block-start: 2rem;
+    margin-block-end: 1rem;
+    justify-content: left;
+    width: 100%;
+
+    & input {
+        margin-right: 10px;
+    }
+}
+
+// * {
+//     outline: auto;
+// }
+
+form {
+    @include flex-center(column);
+    box-shadow: 5px 5px 20px $color-shadow-dark,
+                5px 5px 20px $color-shadow-light inset,
+                -5px -5px 20px $color-shadow-light;
+    border-radius: 3rem;
+    position: relative;
+    padding: 2rem;
+    
+    & h1 {
+        color: $color-primary;
+        font-size: $font-size-xlarge;;
+        margin-block: 1rem;
+        width: 100%;
+    }
+}
+            
+input[type=submit] {
+    background: linear-gradient(to right, color.adjust($color-primary, $lightness:15%), $color-primary);
+    border: none;
+    border-radius:  10vw;
+    bottom: -2rem;
+    box-shadow: 2px 2px 2px $color-shadow-light inset,
+                -2px -2px 5px color.adjust($color-shadow-dark, $lightness:-10%) inset;
+    color: $color-light;
+    cursor: pointer;
+    font-size: $font-size-base;   
+    padding: 1rem 3rem;
+    position: absolute;
+}
+
+
+input[type=text],
+input[type=password],
+input[type=email] {
+    border: none;
+    border-bottom: 1px solid $color-shadow-dark;
+    font-size: $font-size-base;
+    font-weight: 100;
+    margin-block: 0.5rem;
+    padding: 0.5rem;
+}
+
+input[type=text]::placeholder,
+input[type=password]::placeholder,
+input[type=email]::placeholder {
+    opacity: 0.5;
+    font-size: $font-size-small;
+}
+
+// logim forgot pass label
+#loginForm label {
+    margin-block-start: 2rem;
+    margin-block-end: 1rem;
+    text-align: left;
+    width: 100%;
+
+    & a {
+        text-decoration: none;
+    }
+}

@@ -1,0 +1,22 @@
+@use "sass:math";
+
+// Function to calculate fluid clamp values automatically
+@function fluid-clamp($min-size, $max-size, $min-vw: 23.4375rem, $max-vw: 90rem) {
+  // Convert inputs to raw numbers (stripping 'rem' unit for math)
+  $raw-min-size: math.div($min-size, 1rem);
+  $raw-max-size: math.div($max-size, 1rem);
+  $raw-min-vw: math.div($min-vw, 1rem);
+  $raw-max-vw: math.div($max-vw, 1rem);
+
+  // Calculate the slope (how fast the font grows per viewport unit)
+  $slope: math.div(($raw-max-size - $raw-min-size), ($raw-max-vw - $raw-min-vw));
+  
+  // Calculate the intersection point
+  $y-axis-intersection: -$raw-min-vw * $slope + $raw-min-size;
+
+  // Convert slope to vw unit
+  $slope-vw: $slope * 100;
+
+  // Return the compiled clamp function
+  @return clamp(#{$min-size}, #{$y-axis-intersection * 1rem} + #{$slope-vw}vw, #{$max-size});
+}
