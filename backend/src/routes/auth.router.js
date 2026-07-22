@@ -1,34 +1,6 @@
 import { Router } from "express";
 import bcrypt from "bcrypt"
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-import { PrismaClient } from '@prisma/client';
-// local sqlite
-import Database from 'better-sqlite3';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const dbPath = path.resolve(__dirname, '../../prisma/dev.db');
-
-const sqlite = new Database(dbPath);
-
-const adapter = new PrismaBetterSqlite3({
-    url: `file:${dbPath}`
-  });
-const prisma = new PrismaClient({ adapter });
-
-// for turso
-// import { createClient } from '@libsql/client';
-// import { PrismaLibSQL } from '@prisma/adapter-libsql';
-
-// const libsql = createClient({
-//   url: process.env.DATABASE_URL,
-//   authToken: process.env.DATABASE_AUTH_TOKEN,
-// });
-// const adapter = new PrismaLibSQL(libsql);
+import { prisma } from "../lib/prisma.js";
 
 const router = Router()
 
@@ -46,15 +18,12 @@ router.post('/api/register', async (req, res) => {
     try {
         const existingUser = await prisma.user.findFirst({
             where: {
-                OR: [
-                    { username: username },
-                    { email: email }
-                ]
+                username: username 
             }
         });
 
         if (existingUser) {
-            return res.status(400).json({ error: "Username or Email already registered." });
+            return res.status(400).json({ error: "Username already registered." });
         }
 
         const saltRound = 10
@@ -78,6 +47,46 @@ router.post('/api/register', async (req, res) => {
         console.error("Database Transaction Error:", error);
         return res.status(500).json({ error: "Internal server anomaly occurred during save." });
     }
+})
+
+router.post('/api/login', async (req, res) => {
+    // destructuring the data from the frontend
+    const { username, password} = req.body
+    
+    console.log(req.body)
+
+    // checking for the fields to contain data
+    if (!username || !password) {
+        return res.status(400).json({ error: "All profile fields are required." });
+    }
+    
+    try {
+        // fetch the username to check with the user has registered
+        const user = await prisma.user.findUnique({
+            where: {
+                username: username
+            }
+        })
+
+        // if the user does not exist, send back error msg to frontend
+        if (!user) {
+            return res.status(404).json({error: "The user does not exist!"})
+        }
+        
+        // check the password whether it is correct or not
+        const checkPW = await bcrypt.compare(password, user.password)
+
+        if (!checkPW) {
+            return res.status(400).json({error: "Username or password is incorrect!"})
+        }
+
+        // if everything matches log the user in
+        console.log("User is logged in")
+    } catch (error) {
+        console.error("Database Transaction Error:", error);
+        return res.status(500).json({ error: "Internal server anomaly occurred during save." });
+    }
+
 })
 
 export default router

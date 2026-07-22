@@ -2,6 +2,10 @@
 @use '../utils/mixins' as *;
 @use 'sass:color';
 
+body:has(.game-main) nav {
+    display: none;
+}
+
 .game-main {
     @include flex-center(row);
     height: 100vh;

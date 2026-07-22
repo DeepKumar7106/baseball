@@ -11,7 +11,7 @@ export default defineConfig({
   },
   datasource: {
     // For local SQLite:
-    url: env("DATABASE_URL") || "file:./dev.db", 
+    url: env("DATABASE_URL") || "file:./prisma/dev.db", 
     
     // OR if you are using Turso:
     // url: env("DATABASE_URL"), // e.g. libsql://your-db.turso.io

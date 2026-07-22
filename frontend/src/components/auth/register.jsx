@@ -47,7 +47,7 @@ export default function Register () {
 
     return (
         <main id="registerMain" className="form-main">
-            <form onSubmit={handleSubmit} id="registerForm">
+            <form onSubmit={handleSubmit} id="registerForm" method="post"> 
                 <h1 id="registerFormHeading">Register</h1>
                 <input 
                     type="text" 
