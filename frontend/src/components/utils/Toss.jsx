@@ -1,0 +1,72 @@
+import { useState } from "react"
+
+export default function Toss() {
+
+    const [tossMode, setTossMode] = useState("color")
+    const [buttonsVisible, setButtonVisible] = useState(true)
+    const [computerChoice, setComputerChoice] = useState("")
+
+    const handleClick = (choice) => {
+        const choiceList = ["red", "blue"]
+        if (tossMode === "color") {
+            // update the tossMode
+            setTossMode("inningMode")
+
+            // get a random value between 1 and 2 
+            const toss = Math.round(Math.random)
+
+            // compare with the user click
+            if (choice !== choiceList[toss]) {
+                // user lost the toss 
+                setButtonVisible(false)
+
+                // let the computer select the inning mode 
+                setComputerChoice(computerSelect())
+
+            }
+
+            // update the UI accordingly
+        }
+    }
+
+    return (
+        <>
+            <section className="toss_section">
+                <div className="toss_section__display">
+                    <h1>Toss</h1>
+                    <p>Won blah blah</p>
+                </div>
+                {buttonsVisible && <div className="toss_section__wrapper">
+                    <div className="toss_section__buttons">
+                        <div 
+                            className="toss_section__button_box"
+                            onClick={() => handleClick(red)}
+                        >
+                            <button className="red"></button>
+                            {tossMode === "inningMode" && <span>Bat</span>}
+                        </div>
+                        <div 
+                            className="toss_section__button_box"
+                            onClick={() => handleClick(blue)}
+                        >
+                            <button className="blue"></button>
+                            {tossMode === "inningMode" && <span>Ball</span>}
+                        </div>
+                    </div>
+                    <p>Choose one {tossMode}</p>
+                </div> }
+
+                {/* player lost the toss */} 
+                { computerChoice && <div className="toss_section__opponent_choice">
+                    <p>The opponent decided to {computerChoice} first! </p>
+                    <button>Play</button>
+                </div> }
+            </section>
+        </>
+    )
+}
+
+const computerSelect = () => {
+    const choice = Math.round(Math.random())\
+    return choice ? "bat" : "ball"
+}

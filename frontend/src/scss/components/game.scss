@@ -112,19 +112,22 @@ body:has(.game-main) nav {
 
     &__button-wrapper {
         background-color: yellow;
-        border-radius: 4rem;
+        border-radius: 10vh;
         display: grid;
-        gap: 1rem;
+        gap: 2vh;
         grid-template-columns: repeat(3, 1fr);
-        padding: 1rem;
-        width: 60%;
+        height: 37vh;
+        padding: 2vh;
+        width: 26vw;
+        // width: max-content;
     }
     
     &__button {
         aspect-ratio: 1 / 1 ;
+        height: 15vh;
         background: $color-light;
         border: none;
-        border-radius: 200rem;
+        border-radius: 15vh;
         box-shadow: 5px 5px 20px $color-shadow-dark,
         5px 5px 20px $color-shadow-light inset,
         -5px -5px 20px $color-shadow-light;
@@ -135,6 +138,12 @@ body:has(.game-main) nav {
         // width: 7rem;
     }
     
+    &__interval {
+        width: 100%;
+        text-align: center;
+        font-size: $font-size-large;
+    }
+
     &__ball-count-wrapper {
         @include flex-center(row);
         color: $color-primary;

@@ -88,7 +88,8 @@ export default function Game() {
                     </div>
                     <p className="game-section__input__info-texts">You need 200 from 60 balls</p>
                     <div className="game-section__input__button-wrapper">
-                        {[1,2,3,4,5,6].map((num) => (
+
+                        {gameplayMode && [1,2,3,4,5,6].map((num) => (
                             <button 
                                 key={num}
                                 className={`game-section__input__button`}
@@ -97,6 +98,13 @@ export default function Game() {
                             >{num}</button>
                         ))}
 
+                        <div className="game-section__input__interval">
+                            {/* depending on the mode the player name will change */}
+                            <p>The target for the player {user.name} is {user.score}</p>
+                            <button>Continue</button>
+                        </div>
+
+                        
                     </div>
                     <div className="game-section__input__ball-count-wrapper">
                         <img src="src/assets/baseball.png" alt="ball" />
