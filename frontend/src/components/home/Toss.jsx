@@ -25,10 +25,12 @@ export default function Toss({gameDetails, setGameDetails}) {
                 // let the computer select the inning mode 
                 const computerChoice = computerSelect()
                 setComputerChoice(computerChoice)
+                console.log(gameDetails)
                 setGameDetails({
                     ...gameDetails,
                     inningMode: computerChoice === "ball" ? "batting" : "balling"
                 })
+                console.log(gameDetails)
                 return
             }
 
@@ -83,7 +85,7 @@ export default function Toss({gameDetails, setGameDetails}) {
                 { computerChoice && <div className="toss_section__opponent_choice">
                     <p>The opponent decided to {computerChoice} first! </p>
                     <button 
-                        onClick={navigatePlay}
+                        onClick={() => {navigatePlay(gameDetails)}}
                     >Play</button>
                 </div> }
             </section>

@@ -4,17 +4,20 @@ import { checkStrike, getOpponentInput } from "../../scripts/game.utils";
 import { useLocation, useParams } from "react-router-dom";
 
 export default function Game() {
+    // store player details recieved from /home
+    const location = useLocation()
+    const gameDetails = location.state
+
+    // if invalid data throw error screen
+    if (!gameDetails) return <p>No data found.</p>;
+    
+    // basic game variables
     const [userInput, setUserInput] = useState(0)
     const [oppnInput, setOppnInput] = useState(0)
     const [strikeCount, setStrikeCount] = useState(0)
-   
-    const location = useLocation()
-    const gameDetails = location.state
-    console.log(gameDetails)
-
-    if (!gameDetails) return <p>No data found.</p>;
-    
     const maxBalls = gameDetails.ballCount
+    const [ballCount, setBallCount] = useState(maxBalls) 
+    
     // name is hardcoded for testing, future note to update them over params
     const [user, setUser] = useState({
         "name": gameDetails.playerName,
@@ -25,14 +28,21 @@ export default function Game() {
         "name":gameDetails.opponent,
         "score":0
     })
-    const [gameplayMode, setGameplayMode] = useState(false)
-    const [mode, setMode] = useState(gameDetails.inningMode)
-    const [ballCount, setBallCount] = useState(maxBalls) 
+
+    // gameplay variables
+    const [gameplayMode, setGameplayMode] = useState(true) // defines whether the input is allowed 
+    const [mode, setMode] = useState(gameDetails.inningMode) // batting or balling
+
+    // the actaul gameplay
     const handleUserClick = (num) => {
         try {
             if (ballCount === 1 || strikeCount === 2) {
+                // one inning has came to an end, reset the variables
                 console.log("Game end")
                 setGameplayMode(false)
+                setBallCount(maxBalls)
+                setStrikeCount(0)
+
             }
             // store user input
             const userInputValue = num
@@ -106,11 +116,11 @@ export default function Game() {
                             >{num}</button>
                         ))}
 
-                        <div className="game-section__input__interval">
+                        {!gameplayMode && <div className="game-section__input__interval">
                             {/* depending on the mode the player name will change */}
                             <p>The target for the player {user.name} is {user.score}</p>
                             <button>Continue</button>
-                        </div>
+                        </div>}
 
                         
                     </div>
