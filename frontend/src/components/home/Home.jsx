@@ -78,7 +78,7 @@ export default function Home() {
                         onClick={handlePlay}    
                     >
                             Play</button>
-                    <Toss gameDetails = {gameDetails} setGameDetails = {setGameDetails}></Toss>
+                    {isToss && <Toss gameDetails = {gameDetails} setGameDetails = {setGameDetails}></Toss>}
                 </section>
                 <section className="section__scoreboard">
                     <h2 className="section__scoreboard__heading">Top scores</h2>

@@ -1,25 +1,33 @@
 import { useState } from "react";
 import Player from "./Player";
 import { checkStrike, getOpponentInput } from "../../scripts/game.utils";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function Game() {
-    const maxBalls = 15
     const [userInput, setUserInput] = useState(0)
     const [oppnInput, setOppnInput] = useState(0)
     const [strikeCount, setStrikeCount] = useState(0)
+   
+    const location = useLocation()
+    const gameDetails = location.state
+    console.log(gameDetails)
+
+    if (!gameDetails) return <p>No data found.</p>;
+    
+    const maxBalls = gameDetails.ballCount
     // name is hardcoded for testing, future note to update them over params
     const [user, setUser] = useState({
-        "name": "Konata",
+        "name": gameDetails.playerName,
         "score": 0,
     })
     // same for the opponent names
     const [opponent, setOpponent] = useState({
-        "name":"Laptop",
+        "name":gameDetails.opponent,
         "score":0
     })
     const [gameplayMode, setGameplayMode] = useState(false)
-    const [mode, setMode] = useState("Batting")
-    const [ballCount, setBallCount] = useState(maxBalls) // hardcode for the testing
+    const [mode, setMode] = useState(gameDetails.inningMode)
+    const [ballCount, setBallCount] = useState(maxBalls) 
     const handleUserClick = (num) => {
         try {
             if (ballCount === 1 || strikeCount === 2) {
@@ -46,7 +54,7 @@ export default function Game() {
                 setStrikeCount(count => count + 1)
             else {
                 setStrikeCount(0)
-                if (mode == "Batting") {
+                if (mode == "batting") {
                     setUser((prevUser) => ({
                         ...prevUser,
                         score: prevUser.score + userInputValue

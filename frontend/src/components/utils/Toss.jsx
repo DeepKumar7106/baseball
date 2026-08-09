@@ -1,10 +1,12 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function Toss({gameDetails, setGameDetails}) {
 
     const [tossMode, setTossMode] = useState("color")
     const [buttonsVisible, setButtonVisible] = useState(true)
     const [computerChoice, setComputerChoice] = useState("")
+    const navigate = useNavigate()
 
     const handleClick = (choice) => {
         const choiceList = ["red", "blue"]
@@ -21,7 +23,12 @@ export default function Toss({gameDetails, setGameDetails}) {
                 setButtonVisible(false)
                 
                 // let the computer select the inning mode 
-                setComputerChoice(computerSelect())
+                const computerChoice = computerSelect()
+                setComputerChoice(computerChoice)
+                setGameDetails({
+                    ...gameDetails,
+                    inningMode: computerChoice === "ball" ? "batting" : "balling"
+                })
                 return
             }
 
@@ -29,11 +36,20 @@ export default function Toss({gameDetails, setGameDetails}) {
         } else {
             // if choice is red then bat or else ball
             // update the data packet to set the choice
-            setGameDetails({
+            const playerChoice = choice === "red" ? "batting" : "balling"
+            const updatedGameDetails = {
                 ...gameDetails,
-                inningMode: choice === "red" ? "batting" : "balling"
-            })
+                inningMode: playerChoice,
+            }
+
+            setGameDetails(updatedGameDetails)
+            
+            navigatePlay(updatedGameDetails)
         }
+    }
+
+    const navigatePlay = (details = gameDetails) => {
+        navigate(`/game`, { state: details })
     }
 
     return (
@@ -66,7 +82,9 @@ export default function Toss({gameDetails, setGameDetails}) {
                 {/* player lost the toss */} 
                 { computerChoice && <div className="toss_section__opponent_choice">
                     <p>The opponent decided to {computerChoice} first! </p>
-                    <button>Play</button>
+                    <button 
+                        onClick={navigatePlay}
+                    >Play</button>
                 </div> }
             </section>
         </>
