@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Player from "./Player";
-import { checkStrike, getOpponentInput } from "../../scripts/game.utils";
+import { checkStrike, getOpponentInput, checkWinner } from "../../scripts/game.utils";
 import { useLocation, useParams } from "react-router-dom";
 
 export default function Game() {
@@ -28,11 +28,16 @@ export default function Game() {
         "name":gameDetails.opponent,
         "score":0
     })
-
+    
     // gameplay variables
     const [gameplayMode, setGameplayMode] = useState(true) // defines whether the input is allowed 
     const [mode, setMode] = useState(gameDetails.inningMode) // batting or balling
-
+    const [inningCount, setInningCount] = useState(0) // defines the UI for each inning
+    const [inningEndString, setInningEndString] = useState("") // defines the UI for each inning
+    
+    // variable for target
+    let secondInningBatsmen = 0
+    
     // the actaul gameplay
     const handleUserClick = (num) => {
         try {
@@ -40,9 +45,21 @@ export default function Game() {
                 // one inning has came to an end, reset the variables
                 console.log("Game end")
                 setGameplayMode(false)
-                setBallCount(maxBalls)
+                setBallCount(maxBalls + 1)
                 setStrikeCount(0)
 
+                // update the inningEndString 
+                const currentBatter = mode === "balling" ? opponent : user
+                const nextBatter = mode === "batting" ? opponent : user
+                let inningRemarks = `${nextBatter.name} has to chase ${currentBatter.score} in ${maxBalls}`
+
+                if (inningCount && strikeCount === 2) {
+                    // for the singleplayer 
+                    // for online 1v1 there may have to be different way to evaluate the winner
+                    const winner = mode === "batting" ? opponent.name : user.name
+                    inningRemarks = `${winner} won the game` 
+                }
+                setInningEndString(inningRemarks)
             }
             // store user input
             const userInputValue = num
@@ -56,7 +73,6 @@ export default function Game() {
                 setUserInput(userInputValue)
                 setOppnInput(oppnInputValue)
             }
-            
             // update scores
             // check whether a strike or not
             const isStrike = checkStrike(userInputValue, oppnInputValue)
@@ -64,22 +80,52 @@ export default function Game() {
                 setStrikeCount(count => count + 1)
             else {
                 setStrikeCount(0)
+                // update the scores
                 if (mode == "batting") {
-                    setUser((prevUser) => ({
-                        ...prevUser,
-                        score: prevUser.score + userInputValue
-                    }))
+                    setUser({
+                        ...user,
+                        score: user.score + userInputValue
+                    })
                 } else {
-                    setOpponent((prevOpponent) => ({
-                        ...prevOpponent,
-                        score: prevOpponent.score + oppnInputValue
-                    }))
+                    setOpponent({
+                        ...opponent,
+                        score: opponent.score + oppnInputValue
+                    })
                 }
+                
+                // check for win
+                // doesnt work as intended
+                // issues: strike count reset but in the next iteration , should also reset the both the inputs
+                if (inningCount) {
+                    const target = mode === "batting" ? opponent.score : user.score
+                    secondInningBatsmen = mode === "batting" ? user.score : opponent.score
+                    console.log(secondInningBatsmen)
+                
+                    if (secondInningBatsmen > target) {
+                        setGameplayMode(false)
+                        const winner = mode === "batting" ? user.name : opponent.name
+                        setInningEndString(`${winner} won the game`)
+                    }
+                }
+
             }
             setBallCount(count => count - 1)
+
+            // check if the target is reached if in the 2nd inning
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleContinue = () => {
+        // allow the user input
+        setGameplayMode(true)
+
+        // switch the inning mode 
+        setMode(prevMode => prevMode === "batting" ? "balling" : prevMode) 
+
+        if (!inningCount) 
+            setInningCount(1)
     }
 
     return (
@@ -118,8 +164,10 @@ export default function Game() {
 
                         {!gameplayMode && <div className="game-section__input__interval">
                             {/* depending on the mode the player name will change */}
-                            <p>The target for the player {user.name} is {user.score}</p>
-                            <button>Continue</button>
+                            <p>{inningEndString}</p>
+                            {!inningCount && <button
+                                onClick={handleContinue}
+                            >Continue</button>}
                         </div>}
 
                         

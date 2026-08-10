@@ -1,5 +1,5 @@
 const getOpponentInput = (opponent) => {
-    if (opponent === "Laptop") {
+    if (opponent === "cpu") {
         // return a random value between 1 and 6
         return Math.round(Math.random() * 5) + 1 
     }
@@ -13,4 +13,12 @@ const checkStrike = (user, oppn) => {
     return isStrike
 }
 
-export { getOpponentInput, checkStrike }
+const checkWinner = (user, opponent, mode) => {
+    const userScore = user.score
+    const opponentScore = opponent.score
+    if (mode === "batting") {
+        return userScore > opponentScore ? user : opponent
+    }
+}
+
+export { getOpponentInput, checkStrike, checkWinner }
