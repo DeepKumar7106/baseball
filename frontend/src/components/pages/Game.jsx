@@ -2,24 +2,37 @@ import { useState } from "react";
 import Player from "./Player";
 import { checkStrike, getOpponentInput, checkWinner } from "../../scripts/game.utils";
 import { useLocation, useParams } from "react-router-dom";
-
+import { useAuth } from "../../context/AuthContext";
 export default function Game() {
+    // destructuring the useAuth
+    const { user, isAuthenticated } = useAuth()
+    console.log(user, isAuthenticated) 
+
     // store player details recieved from /home
     const location = useLocation()
-    const gameDetails = location.state
+
+    // default values to prevent crash during loading via URL
+    const defaultGameDetails = {
+        playerName: user?.username || "Konata",
+        opponent: "cpu",
+        ballCount: 15,
+        inningMode: "batting"
+    };
+
+    const gameDetails = location.state || defaultGameDetails
 
     // if invalid data throw error screen
     if (!gameDetails) return <p>No data found.</p>;
     
     // basic game variables
-    const [userInput, setUserInput] = useState(0)
+    const [playerInput, setPlayerInput] = useState(0)
     const [oppnInput, setOppnInput] = useState(0)
     const [strikeCount, setStrikeCount] = useState(0)
     const maxBalls = gameDetails.ballCount
     const [ballCount, setBallCount] = useState(maxBalls) 
     
     // name is hardcoded for testing, future note to update them over params
-    const [user, setUser] = useState({
+    const [player, setPlayer] = useState({
         "name": gameDetails.playerName,
         "score": 0,
     })
@@ -33,13 +46,14 @@ export default function Game() {
     const [gameplayMode, setGameplayMode] = useState(true) // defines whether the input is allowed 
     const [mode, setMode] = useState(gameDetails.inningMode) // batting or balling
     const [inningCount, setInningCount] = useState(0) // defines the UI for each inning
+    const [target, setTarget] = useState(0) // defines the UI for each inning
     const [inningEndString, setInningEndString] = useState("") // defines the UI for each inning
     
     // variable for target
     let secondInningBatsmen = 0
     
     // the actaul gameplay
-    const handleUserClick = (num) => {
+    const handlePlayerClick = (num) => {
         try {
             if (ballCount === 1 || strikeCount === 2) {
                 // one inning has came to an end, reset the variables
@@ -48,21 +62,24 @@ export default function Game() {
                 setBallCount(maxBalls + 1)
                 setStrikeCount(0)
 
+                // set the target
+                setTarget(mode === "batting" ? player.score : opponent.score)
+
                 // update the inningEndString 
-                const currentBatter = mode === "balling" ? opponent : user
-                const nextBatter = mode === "batting" ? opponent : user
+                const currentBatter = mode === "balling" ? opponent : player
+                const nextBatter = mode === "batting" ? opponent : player
                 let inningRemarks = `${nextBatter.name} has to chase ${currentBatter.score} in ${maxBalls}`
 
                 if (inningCount && strikeCount === 2) {
                     // for the singleplayer 
                     // for online 1v1 there may have to be different way to evaluate the winner
-                    const winner = mode === "batting" ? opponent.name : user.name
+                    const winner = mode === "batting" ? opponent.name : player.name
                     inningRemarks = `${winner} won the game` 
                 }
                 setInningEndString(inningRemarks)
             }
-            // store user input
-            const userInputValue = num
+            // store player input
+            const playerInputValue = num
             
             // get opponent input
             const oppnInputValue = getOpponentInput(opponent.name)          
@@ -70,21 +87,21 @@ export default function Game() {
             // future note: when implenting game over network, should add asynchronous opperations on the following
             // update the display values
             if (oppnInputValue) {
-                setUserInput(userInputValue)
+                setPlayerInput(playerInputValue)
                 setOppnInput(oppnInputValue)
             }
             // update scores
             // check whether a strike or not
-            const isStrike = checkStrike(userInputValue, oppnInputValue)
+            const isStrike = checkStrike(playerInputValue, oppnInputValue)
             if (isStrike) 
                 setStrikeCount(count => count + 1)
             else {
                 setStrikeCount(0)
                 // update the scores
                 if (mode == "batting") {
-                    setUser({
-                        ...user,
-                        score: user.score + userInputValue
+                    setPlayer({
+                        ...player,
+                        score: player.score + playerInputValue
                     })
                 } else {
                     setOpponent({
@@ -97,14 +114,13 @@ export default function Game() {
                 // doesnt work as intended
                 // issues: strike count reset but in the next iteration , should also reset the both the inputs
                 if (inningCount) {
-                    const target = mode === "batting" ? opponent.score : user.score
-                    secondInningBatsmen = mode === "batting" ? user.score : opponent.score
-                    console.log(secondInningBatsmen)
-                
-                    if (secondInningBatsmen > target) {
+                    const currentScore = mode === "batting" ? player.score : opponent.score
+                    const currentInput = mode === "batting" ? playerInputValue : oppnInputValue
+                    if (currentScore + currentInput > target) {
+                        const winner = mode === "batting" ? player.name : opponent.name
+                        const remarks = `${winner} won the game`
+                        setInningEndString(remarks)
                         setGameplayMode(false)
-                        const winner = mode === "batting" ? user.name : opponent.name
-                        setInningEndString(`${winner} won the game`)
                     }
                 }
 
@@ -118,11 +134,11 @@ export default function Game() {
     }
 
     const handleContinue = () => {
-        // allow the user input
+        // allow the player input
         setGameplayMode(true)
 
         // switch the inning mode 
-        setMode(prevMode => prevMode === "batting" ? "balling" : prevMode) 
+        setMode(prevMode => prevMode === "batting" ? "balling" : "batting" ) // i am stoopid
 
         if (!inningCount) 
             setInningCount(1)
@@ -130,9 +146,9 @@ export default function Game() {
 
     return (
         <>
-            <main className="game-main">
+            {isAuthenticated && <main className="game-main">
                 {/* current player stats */}
-                <Player player={user}></Player>
+                <Player player={player}></Player>
 
                 {/* actual game UI */}
                 <section className="game-section game-section__input">
@@ -140,7 +156,7 @@ export default function Game() {
                     <div className="game-section__input__wrapper">
                         <div className="game-section__input__wrapper__player">
                             <h2>input</h2>
-                            <span>{userInput}</span>
+                            <span>{playerInput}</span>
                         </div>
                         <div className="game-section__input__strike-wrapper">
                             <div className="strike-one">{"!".repeat(strikeCount)}</div>
@@ -157,7 +173,7 @@ export default function Game() {
                             <button 
                                 key={num}
                                 className={`game-section__input__button`}
-                                onClick={() => handleUserClick(num)}
+                                onClick={() => handlePlayerClick(num)}
 
                             >{num}</button>
                         ))}
@@ -181,7 +197,7 @@ export default function Game() {
 
                 {/* opponent player stats */}
                 <Player player={opponent}></Player>
-            </main>
+            </main>}
         </>
     )
 }

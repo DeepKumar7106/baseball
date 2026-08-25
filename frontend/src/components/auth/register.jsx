@@ -49,6 +49,7 @@ export default function Register () {
         <main id="registerMain" className="form-main">
             <form onSubmit={handleSubmit} id="registerForm" method="post"> 
                 <h1 id="registerFormHeading">Register</h1>
+                <p>Already have an account? <a href="/login">Login</a></p>
                 <input 
                     type="text" 
                     id="registerInputTextUsername" 

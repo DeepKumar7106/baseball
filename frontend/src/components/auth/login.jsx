@@ -1,4 +1,8 @@
+import { useAuth } from "../../context/AuthContext"
+
 export default function Login () {
+    const { login } = useAuth()
+
     const formSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -22,10 +26,14 @@ export default function Login () {
 
             // response from the server
             const data = await response.json()
+
             if (!response.ok) {
                 throw new Error(data.error || "Registration failed.");
             }
-    
+            
+            // log the user in 
+            login(data.token, data.user)
+            
             console.log("Success! Logged");
 
         } catch (error) {
@@ -37,6 +45,7 @@ export default function Login () {
         <main id="loginMain" className="form-main">
             <form onSubmit={formSubmit} id="loginForm" method="post">
                 <h1 id="loginFormHeading">Login</h1>
+                <p>New player? <a href="/register">Create a new account</a></p>
                 <input 
                     type="text" 
                     id="loginInputTextUsername" 

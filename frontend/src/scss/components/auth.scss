@@ -46,6 +46,10 @@ form {
         margin-block: 1rem;
         width: 100%;
     }
+
+    & > p {
+        width: 100%;
+    }
 }
             
 input[type=submit] {
