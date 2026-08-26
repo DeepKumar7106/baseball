@@ -88,7 +88,6 @@ router.post('/api/login', async (req, res) => {
             { expiresIn: '7d' } // how long the user can stay logged, before re login required
         )
         
-        console.log("user is logged in")
         
         // return the token and user details
         res.json({
