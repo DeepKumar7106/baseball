@@ -22,61 +22,49 @@ body:has(.home-main) {
     height: 100vh;
     width: 100%;
     anchor-name: --hero;
+    background: $color-dark;
+    position: relative;
     
-    &__text {
-        // font-family: $kona;
-        font-size: 15vw;
-        font-weight: 900;
+    &__text,
+    &__text-outline {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 20vw;
+        font-weight: 600;
         min-height: 50%;
         padding: 1rem;
         text-align: center;
         text-transform: uppercase;
         width: 100%;
-        color: $color-light;
-        background: $color-primary;
-        
-        // text-shadow: 5px 5px 30px $color-shadow-dark;
+        color: $color-primary;
+
+        display: block;
+        position: absolute;
+        top: 50%;
+        transform: 
+            // scaleY(1.5)
+            translateY(-50%);
+        transform-origin: top;
+    
     }
     
-    &__cta {
-        position-anchor: --hero;
+    &__image {
+        height: 80%;
         position: absolute;
-        
-        --cta-size: 15vh;
-        // color: azure;
-        box-shadow: 5px 5px 10px $color-shadow-dark;
-        
-        display: grid;
-        align-content: center;
-        justify-items: center;
-        background-color: yellow;
-        font-size: var(--cta-size);
-        height: var(--cta-size);
-        border-radius: var(--cta-size);
-        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-        
-        &:hover {
-            --cta-size: 20vh;
-            box-shadow: 5px 5px 30px $color-shadow-dark;
+        top: 50%;
+        transform: translateY(-50%);
+
+        & img {
+            height: 100%;
         }
     }
-}
-
-.base {
-    display: grid;
-    align-content: end;
     
-    background: $color-light;
-    color: $color-primary;
-    box-shadow: -5px -5px 10px $color-shadow-dark inset;
+    
+    &__text-outline {
+        color: transparent;
+        -webkit-text-stroke: 0.1vh $color-primary;
+    }
 }
 
-.ball {
-        box-shadow: 0 5px 5px $color-shadow-dark inset,
-                    5px 5px 10px #9c7df1a2 inset,
-                    -5px -5px 10px $color-dark inset
-        ;
-    }
     
 .section__typography {
     display: grid;
