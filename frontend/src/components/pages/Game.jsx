@@ -68,7 +68,7 @@ export default function Game() {
                 // update the inningEndString 
                 const currentBatter = mode === "balling" ? opponent : player
                 const nextBatter = mode === "batting" ? opponent : player
-                let inningRemarks = `${nextBatter.name} has to chase ${currentBatter.score} in ${maxBalls}`
+                let inningRemarks = `You have to ${nextBatter.name === player.name ? 'chase' : 'defend'} ${currentBatter.score} in ${maxBalls}`
 
                 if (inningCount && strikeCount === 2) {
                     // for the singleplayer 
@@ -160,13 +160,27 @@ export default function Game() {
                     </div>
                     <div className="game-section__input__wrapper">
                         <div className="game-section__input__details">
-                            <div className="game-section__input__details__display user"></div>
-                            <div className="game-section__input__details__display center"></div>
-                            <div className="game-section__input__details__display player"></div>
+                            <div className="game-section__input__details__display user">{playerInput}</div>
+                            <div className="game-section__input__details__display center">
+                                <p>
+                                    {gameplayMode ? `Balls Remaining: ${ballCount}` : inningEndString}
+                                </p>
+                                <p >
+                                    {!gameplayMode ? <span
+                                                        onClick={handleContinue}
+                                                    >
+                                                        Continue
+                                                    </span> 
+                                                    : ""
+                                    }
+                                </p>
+                            </div>
+                            <div className="game-section__input__details__display player">{oppnInput}</div>
                         </div>
-                        <div className="game-section__input__button_wrapper">
-
-                            {gameplayMode && [1,2,3,4,5,6].map((num) => (
+                        <div 
+                            className={`game-section__input__button_wrapper ${gameplayMode ? '' : 'disable_user_input'}`}
+                        >
+                            {[1,2,3,4,5,6].map((num) => (
                                 <button 
                                     key={num}
                                     className={`game-section__input__button`}
@@ -174,14 +188,6 @@ export default function Game() {
 
                                 >{num}</button>
                             ))}
-
-                            {!gameplayMode && <div className="game-section__input__interval">
-                                {/* depending on the mode the player name will change */}
-                                <p>{inningEndString}</p>
-                                {!inningCount && <button
-                                    onClick={handleContinue}
-                                >Continue</button>}
-                            </div>}
                         </div>
                     </div>
                 </section>
@@ -192,3 +198,11 @@ export default function Game() {
         </>
     )
 }
+
+// {!gameplayMode && <div className="game-section__input__interval">
+//     {/* depending on the mode the player name will change */}
+//     <p>{inningEndString}</p>
+//     {!inningCount && <button
+//         onClick={handleContinue}
+//     >Continue</button>}
+// </div>}

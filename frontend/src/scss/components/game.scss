@@ -60,14 +60,12 @@ body:has(.game-main) nav {
 }
 
 .game-section {
-    outline: auto;
-
     &__input {
         @include flex-center(column);
         gap: 2rem;
         height: 100%;
         // justify-content: space-around;
-        width: 40%;
+        width: 50%;
 
         & > * {
             text-align: center;
@@ -127,7 +125,7 @@ body:has(.game-main) nav {
         width: 100%;
         @include flex-center(row);
         gap: 1vh;
-        margin-block-end: 5vh;
+        margin-block-end: 2vh;
     }
 
     &__details__display {
@@ -135,20 +133,64 @@ body:has(.game-main) nav {
         aspect-ratio: 1 / 1;
         background: $color-dark;
         border-radius: var(--inner-radius);
+        font-family: 'Silkscreen';
+        color: $color-primary;
+        font-weight: 500;
+        font-size: 10vh;
+        text-shadow: 0 0 20px color.adjust($color-primary, $alpha: -0.1);
+        padding: 1vh;
     }
 
     &__details .center {
         flex: 1;
+        font-size: 3vh;
+        @include flex-center(column);
+        gap: 1vh;
+    }
+    
+    &__details .center p {
+        width: 100%;
+        height: max-content;
+        min-height: 2ch;
+    }
+    
+    &__details .center span {
+        font-size: 3vh;
+        background-color: $color-primary;
+        color: $color-dark;
+        padding-inline: 1vh;
+        border-radius: 1vh;
     }
 
     &__button_wrapper {
-        background-color: $color-primary-lighter;
-        border-radius: 10vh;
+        // background-color: $color-primary-lighter;
+        border-radius: 1vh;
         display: grid;
-        gap: 2vh;
+        gap: 0.5vh;
         grid-template-columns: repeat(3, 1fr);
-        padding: 2vh;
+        padding: 1vh;
         margin-inline: auto;
+    }
+    
+    .disable_user_input {
+        pointer-events: none;
+        opacity: 0.8;
+    }
+    
+    &__button:nth-child(1) {
+        border-top-left-radius: 1vh;
+    }
+    
+    &__button:nth-child(3) {
+        border-top-right-radius: 1vh;
+    }
+    
+    &__button:nth-child(4) {
+        border-bottom-left-radius: 1vh;
+    }
+    
+    &__button:nth-child(6) {
+        border-bottom-right-radius: 1vh;
     }
     
     &__button {
@@ -156,12 +198,10 @@ body:has(.game-main) nav {
         height: 15vh;
         background: $color-light;
         border: none;
-        box-shadow: 5px 5px 20px $color-shadow-dark,
-        5px 5px 20px $color-shadow-light inset,
-        -5px -5px 20px $color-shadow-light;
         color: $color-dark;
         font-size: $font-size-xlarge;
         font-weight: 600;
+        font-family: $font-main;
         // padding: 1.5rem;
         // width: 7rem;
     }

@@ -6,4 +6,5 @@ body {
     // background: radial-gradient($color-light, $color-shadow-light, $color-shadow-dark);
     font-family: $font-main;
     width: 100vw;
+    user-select: none;
 }
