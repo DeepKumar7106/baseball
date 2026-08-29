@@ -1,7 +1,10 @@
+@use 'sass:color';
 @use './functions';
 
 // Colors
 $color-primary: #39ff14;
+$color-primary-light: color.adjust($color-primary, $lightness: 25%);
+$color-primary-lighter: color.adjust($color-primary, $lightness: 30%);
 $color-secondary: #2dc610;
 $color-dark: #010a00;
 $color-accent: #1f51ff;

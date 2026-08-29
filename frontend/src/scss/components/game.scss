@@ -60,12 +60,8 @@ body:has(.game-main) nav {
 }
 
 .game-section {
-    // width: 25%;
-    // height: 50%;
-    // outline: auto;
-    
-    // &__player
-    
+    outline: auto;
+
     &__input {
         @include flex-center(column);
         gap: 2rem;
@@ -103,23 +99,56 @@ body:has(.game-main) nav {
     }
 
 
-    &__strike-wrapper {
-        color: red;
-        font-family: $kona;
-        font-size: $font-size-xxlarge;
-        width: fit-content;
+    &__strike_wrapper {
+       @include flex-center(row);
+       gap: 1vh;
+       padding: 1rem;
+       width: 100%;
     }
 
-    &__button-wrapper {
-        background-color: yellow;
+    &__strike {
+        height: 5vh;
+        aspect-ratio: 1 / 1;
+        border-radius: 100vh;
+        background:$color-dark;
+    }
+
+    &__wrapper {
+        --inner-radius : 15px;
+        $wrapper-padding : 1rem;
+        width: 90%;
+        background: $color-primary-light;
+        padding: $wrapper-padding;
+        @include flex-center(column);
+        border-radius: calc(var(--inner-radius) + $wrapper-padding);
+    }
+    
+    &__details {
+        width: 100%;
+        @include flex-center(row);
+        gap: 1vh;
+        margin-block-end: 5vh;
+    }
+
+    &__details__display {
+        height: 15vh;
+        aspect-ratio: 1 / 1;
+        background: $color-dark;
+        border-radius: var(--inner-radius);
+    }
+
+    &__details .center {
+        flex: 1;
+    }
+
+    &__button_wrapper {
+        background-color: $color-primary-lighter;
         border-radius: 10vh;
         display: grid;
         gap: 2vh;
         grid-template-columns: repeat(3, 1fr);
-        height: 37vh;
         padding: 2vh;
-        width: 26vw;
-        // width: max-content;
+        margin-inline: auto;
     }
     
     &__button {
@@ -127,7 +156,6 @@ body:has(.game-main) nav {
         height: 15vh;
         background: $color-light;
         border: none;
-        border-radius: 15vh;
         box-shadow: 5px 5px 20px $color-shadow-dark,
         5px 5px 20px $color-shadow-light inset,
         -5px -5px 20px $color-shadow-light;
@@ -138,21 +166,4 @@ body:has(.game-main) nav {
         // width: 7rem;
     }
     
-    &__interval {
-        width: 100%;
-        text-align: center;
-        font-size: $font-size-large;
-    }
-
-    &__ball-count-wrapper {
-        @include flex-center(row);
-        color: $color-primary;
-        gap: 1rem;
-    }
-    
-    &__ball-count-wrapper img {
-        aspect-ratio: 1 / 1;
-        height: 50px;
-        object-fit: cover;
-    }
 }

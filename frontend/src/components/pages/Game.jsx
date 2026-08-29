@@ -153,46 +153,37 @@ export default function Game() {
                 {/* actual game UI */}
                 <section className="game-section game-section__input">
                     <h1 className="game-section__input__heading">{mode}</h1>
+                    <div className="game-section__input__strike_wrapper">
+                        <div className="game-section__input__strike one"></div>
+                        <div className="game-section__input__strike two"></div>
+                        <div className="game-section__input__strike three"></div>
+                    </div>
                     <div className="game-section__input__wrapper">
-                        <div className="game-section__input__wrapper__player">
-                            <h2>input</h2>
-                            <span>{playerInput}</span>
+                        <div className="game-section__input__details">
+                            <div className="game-section__input__details__display user"></div>
+                            <div className="game-section__input__details__display center"></div>
+                            <div className="game-section__input__details__display player"></div>
                         </div>
-                        <div className="game-section__input__strike-wrapper">
-                            <div className="strike-one">{"!".repeat(strikeCount)}</div>
-                        </div>
-                        <div className="game-section__input__wrapper__opponent">
-                            <h2>input</h2>
-                            <span>{oppnInput}</span>
+                        <div className="game-section__input__button_wrapper">
+
+                            {gameplayMode && [1,2,3,4,5,6].map((num) => (
+                                <button 
+                                    key={num}
+                                    className={`game-section__input__button`}
+                                    onClick={() => handlePlayerClick(num)}
+
+                                >{num}</button>
+                            ))}
+
+                            {!gameplayMode && <div className="game-section__input__interval">
+                                {/* depending on the mode the player name will change */}
+                                <p>{inningEndString}</p>
+                                {!inningCount && <button
+                                    onClick={handleContinue}
+                                >Continue</button>}
+                            </div>}
                         </div>
                     </div>
-                    <p className="game-section__input__info-texts">You need 200 from 60 balls</p>
-                    <div className="game-section__input__button-wrapper">
-
-                        {gameplayMode && [1,2,3,4,5,6].map((num) => (
-                            <button 
-                                key={num}
-                                className={`game-section__input__button`}
-                                onClick={() => handlePlayerClick(num)}
-
-                            >{num}</button>
-                        ))}
-
-                        {!gameplayMode && <div className="game-section__input__interval">
-                            {/* depending on the mode the player name will change */}
-                            <p>{inningEndString}</p>
-                            {!inningCount && <button
-                                onClick={handleContinue}
-                            >Continue</button>}
-                        </div>}
-
-                        
-                    </div>
-                    <div className="game-section__input__ball-count-wrapper">
-                        <img src="src/assets/baseball.png" alt="ball" />
-                        <h2>Balls remaining: <span id="ballCount">{ballCount}</span></h2>
-                    </div>
-                    <p className="game-section__input__optional-info"></p>
                 </section>
 
                 {/* opponent player stats */}
