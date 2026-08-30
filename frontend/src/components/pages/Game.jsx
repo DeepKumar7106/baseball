@@ -1,13 +1,12 @@
 import { useState } from "react";
 import Player from "./Player";
 import { checkStrike, getOpponentInput, checkWinner } from "../../scripts/game.utils";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 export default function Game() {
     // destructuring the useAuth
     const { user, isAuthenticated } = useAuth()
-    console.log(user, isAuthenticated) 
-
+    
     // store player details recieved from /home
     const location = useLocation()
 
@@ -19,7 +18,11 @@ export default function Game() {
         inningMode: "batting"
     };
 
+    // fetches the game information from the home
     const gameDetails = location.state || defaultGameDetails
+
+    // redirecting hook
+    const navigate = useNavigate()
 
     // if invalid data throw error screen
     if (!gameDetails) return <p>No data found.</p>;
@@ -48,19 +51,16 @@ export default function Game() {
     const [inningCount, setInningCount] = useState(0) // defines the UI for each inning
     const [target, setTarget] = useState(0) // defines the UI for each inning
     const [inningEndString, setInningEndString] = useState("") // defines the UI for each inning
-    
-    // variable for target
-    let secondInningBatsmen = 0
+    const [ctaButton, setCtaButton] = useState("Continue") // defines the button on the display
     
     // the actaul gameplay
     const handlePlayerClick = (num) => {
         try {
             if (ballCount === 1 || strikeCount === 2) {
                 // one inning has came to an end, reset the variables
-                console.log("Game end")
+                // setStrikeCount(0)
                 setGameplayMode(false)
                 setBallCount(maxBalls + 1)
-                setStrikeCount(0)
 
                 // set the target
                 setTarget(mode === "batting" ? player.score : opponent.score)
@@ -111,8 +111,6 @@ export default function Game() {
                 }
                 
                 // check for win
-                // doesnt work as intended
-                // issues: strike count reset but in the next iteration , should also reset the both the inputs
                 if (inningCount) {
                     const currentScore = mode === "batting" ? player.score : opponent.score
                     const currentInput = mode === "batting" ? playerInputValue : oppnInputValue
@@ -126,16 +124,23 @@ export default function Game() {
 
             }
             setBallCount(count => count - 1)
-
-            // check if the target is reached if in the 2nd inning
         } catch (error) {
             console.log(error)
         }
     }
 
     const handleContinue = () => {
+        if (ctaButton === "home") {
+            // redirect to home page
+            navigate('/')
+        }
+        
         // allow the player input
         setGameplayMode(true)
+        setStrikeCount(0)
+
+        // update the ctaButton state
+        setCtaButton("home")
 
         // switch the inning mode 
         setMode(prevMode => prevMode === "batting" ? "balling" : "batting" ) // i am stoopid
@@ -154,9 +159,15 @@ export default function Game() {
                 <section className="game-section game-section__input">
                     <h1 className="game-section__input__heading">{mode}</h1>
                     <div className="game-section__input__strike_wrapper">
-                        <div className="game-section__input__strike one"></div>
-                        <div className="game-section__input__strike two"></div>
-                        <div className="game-section__input__strike three"></div>
+                        <div 
+                            className={`game-section__input__strike_bulb ${strikeCount > 0 ? 'strike' : ''}`}
+                        ></div>
+                        <div 
+                            className={`game-section__input__strike_bulb ${strikeCount > 1 ? 'strike' : ''}`}
+                        ></div>
+                        <div 
+                            className={`game-section__input__strike_bulb ${strikeCount > 2 ? 'strike' : ''}`}
+                        ></div>
                     </div>
                     <div className="game-section__input__wrapper">
                         <div className="game-section__input__details">
@@ -169,7 +180,7 @@ export default function Game() {
                                     {!gameplayMode ? <span
                                                         onClick={handleContinue}
                                                     >
-                                                        Continue
+                                                        {ctaButton}
                                                     </span> 
                                                     : ""
                                     }

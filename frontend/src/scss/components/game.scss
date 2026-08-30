@@ -10,39 +10,22 @@ body:has(.game-main) nav {
     @include flex-center(row);
     height: 100vh;
     width: 100vw;
+    $pattern-spacing: 5vh;
+    $pattern-size: 0.2vh;
+    
+    
+    background-color: $color-dark;
+    background-image: 
+    radial-gradient(circle at center, color.adjust($color-secondary, $alpha: -0.7) $pattern-size, transparent $pattern-size);
+    background-size: $pattern-spacing $pattern-spacing;
 }
-
 
 .game-section__player {
     @include flex-center(column);
-    gap: 1rem;
+    gap: 1vh;
     height: fit-content;
     width: 10rem;
-    border-radius: 10rem;
-    background: yellow;
-
-   
-    &__img-wrapper {
-        @include flex-center(row);
-        background: radial-gradient(color.adjust($color-primary, $lightness:10%), color.adjust($color-primary, $lightness:-10%));
-        aspect-ratio: 1 / 1;
-        border: 5px solid $color-secondary;
-        border-radius: 100vh;
-        height: 10rem;
-        width: 10rem;
-        padding: 5px;
-        
-        anchor-name: --profile;
-    }
-
-    
-    &__img-wrapper img {
-        border-radius: inherit;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        margin: 0;
-        width: 100%;
-    }
+    color: $color-light;
 
     &__stats {
         text-align: center;
@@ -77,43 +60,57 @@ body:has(.game-main) nav {
 
 .game-section__input {
     &__heading {
-        color: $color-primary;
-        font-size: $font-size-xxlarge;
+        color: $color-accent;
+        font-size: 10vh;
+        letter-spacing: 4vh;
+        // text-shadow: 0 0 10vh $color-accent;
+        // filter: blur(2vh);
+
+        position: relative;
+
+        &__heading::after {
+            content: attr(data-text); /* Pulls text directly from the attribute */
+  position: absolute;
+  left: 0;
+  top: 100%;
+  color: #fbd709; /* Custom styling for the pseudo-element */
+//   opacity: 0.6;
+        }
+
     }
     
     &__wrapper {
         @include flex-center(row);
         justify-content: space-between;
-
-        & h2 {
-            font-size: $font-size-small;
-            margin-block-end: 1rem;
-        }
-
-        & span {
-            font-size: $font-size-xlarge;
-            font-weight: 600;
-        }
     }
 
 
     &__strike_wrapper {
-       @include flex-center(row);
-       gap: 1vh;
-       padding: 1rem;
-       width: 100%;
+        @include flex-center(row);
+        gap: 1vh;
+        padding: 1vh;
+        width: max-content;
+        background: $color-shadow-dark;
+        border-radius: 50vh;
     }
-
-    &__strike {
-        height: 5vh;
+    
+    &__strike_bulb {
+        height: 7vh;
         aspect-ratio: 1 / 1;
         border-radius: 100vh;
         background:$color-dark;
     }
+    
+    &__strike_wrapper > .strike {
+        background: #f00;
+        box-shadow: 0 0 30px 0 rgba(255, 0, 0, 0.8);
+        filter: blur(1px);
+    }
+
 
     &__wrapper {
         --inner-radius : 15px;
-        $wrapper-padding : 1rem;
+        $wrapper-padding : 1vh;
         width: 90%;
         background: $color-primary-light;
         padding: $wrapper-padding;
@@ -160,6 +157,7 @@ body:has(.game-main) nav {
         color: $color-dark;
         padding-inline: 1vh;
         border-radius: 1vh;
+        text-transform: capitalize;
     }
 
     &__button_wrapper {
