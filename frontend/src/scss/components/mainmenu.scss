@@ -1,0 +1,114 @@
+@use 'sass:color';
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+
+.section__main-menu {
+    height: 100vh;
+    width: 100%;
+    @include flex-center(row);
+    // background: color.adjust($color-dark, $alpha: -0.1);
+    background: $color-dark;
+    background-image: 
+        radial-gradient(
+            at center, 
+            color.adjust($color-primary, $alpha: -0.6) 1.5px,
+            color.adjust($color-primary, $alpha: -0.9) 1.5px,
+            transparent 3.5px);
+    background-size: 5vh 5vh;
+
+    &__menu-wrapper {
+        height: 100%;
+        width: 50%;
+        align-content: center;
+    }
+    
+    &__menu-ul {
+        width: 50%;
+        height: 50%;
+        padding-inline: 3vw;
+        list-style: none;
+        font-size: $font-size-large;
+        align-content: center;
+    }
+    
+    &__menu-ul li{
+        margin-top: 1rem;
+        color: color.adjust($color-light, $alpha: -0.2);
+    }
+   
+    &__menu-ul .active-main-menu  {
+        border-left: 1vh solid blue;
+        padding-left: 1vh;
+        font-size: $font-size-xlarge;
+        background: 
+            linear-gradient(
+                to left,
+                color.adjust($color-light, $alpha: -0.9), 
+                color.adjust($color-light, $alpha: -0.8));
+
+    }
+    
+    &__profile-wrapper {
+        height: 100%;
+        width: 50%;
+        @include flex-center(column);
+        justify-content: space-around
+        
+    }
+
+    &__profile {
+        @include flex-center(row-reverse);
+        width: 80%;
+        justify-content: end;
+        $pfp-height : 20vh;
+        padding: 1vw;
+        position: relative;
+        transform-style: preserve-3d;
+
+        &::after {
+            content: "";
+            height: 100%;
+            width: 100%;
+            // background: red;
+            position: absolute;
+            top: 0;
+            transform: translateZ(-1px);
+
+            border-radius: calc(1vh + 1vw);
+            border: 2px solid $color-shadow-dark;
+            filter: blur(1px);
+            background: color.adjust($color-dark, $alpha: -0.5);
+        }
+
+        &__img-wrapper {
+            height: $pfp-height;
+            aspect-ratio: 1 / 1;
+            border-radius: 1vh;
+            background: yellow;
+            margin-inline: 1vw;
+        }
+        
+        &__name {
+            flex: 1;
+            font-size: $font-size-xlarge;
+            text-align: right;
+            padding-inline: 1rem;
+            align-self: flex-start;
+            margin-block: 1rem;
+            color: $color-light;
+
+        }
+    }
+
+    &__hero-wrapper {
+        height: 60vh;
+        margin-left: auto;
+        & img {
+            height: 100%;
+
+            
+        }
+    }
+
+}
+

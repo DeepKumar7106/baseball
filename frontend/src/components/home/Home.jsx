@@ -2,6 +2,7 @@ import { useState } from "react";
 import Toss from "./Toss";
 import Scoreboard from "./Scoreboard";
 import HomeHero from "./HomeHero";
+import MainMenu from "../MainMenu";
 
 export default function Home() {
     const [isMode, setIsMode] = useState(false)

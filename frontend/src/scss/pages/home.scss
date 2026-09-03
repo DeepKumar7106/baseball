@@ -67,59 +67,87 @@ body:has(.home-main) {
 
     
 .section__typography {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    width: 50vw;
-
-
-
-    grid-template-areas: 
-        "select toss play" 
-        "information information information" 
-    ;
-    gap: 1rem;
-    place-items: center;
-
-    & .method {
+    height: 100vh;
+    overflow: hidden;
+    &__wrapper {
+        position: sticky;
         @include flex-center(row);
+        width: 50vw;
+        gap: 1rem;
+        min-height: 100vh;
+    }
+    
+    &__nav-wrapper {
+        @include flex-center(column);
+        gap: 4vh;
+
+        & .current-tab {
+            scale: 1.2;
+
+        }
+    }
+        
+    &__method {
+        @include flex-center(column);
         aspect-ratio: 1 / 1;
-        background: linear-gradient(145deg, color.adjust($color-light, $lightness: 40%), $color-light, color.adjust($color-light, $lightness: -40%) );
         border-radius: 10vw;
         font-size: $font-size-base;
         text-transform: uppercase;
         font-weight: 700;
-        // font-family: Arial, Helvetica, sans-serif;
-        height: 10vw;
+        height: 5vw;
         justify-self: center;
-        transition: hover 3000ms cubic-bezier(0.165, 0.84, 0.44, 1);
-        box-shadow: 10px 10px 20px $color-shadow-dark,
-        -10px -10px 20px $color-shadow-light;
-        
-        &:active {
-            background: linear-gradient(145deg, color.adjust($color-light, $lightness: -40%), $color-light, color.adjust($color-light, $lightness: 40%) );
-            box-shadow: 10px 10px 20px $color-shadow-dark,
-            -10px -10px 20px $color-shadow-light;
+        border: 2px solid black;
+        border-radius: 100vh;
+        text-align: center;
+
+        &:hover {
+            scale: 1.2;
         }
     }
 
-    &__select {
-        grid-area: select;
-    }
-
-    &__toss {
-        grid-area: toss;
-    }
-
-    &__play {
-        grid-area: play;
-    }
 
     &__information {
         grid-area: information;
-        height: 30vh;
+        height: 50vh;
         width: 80%;
-        background: black;
-        border-radius: 5vh;
+        position: relative;
+        margin-inline-start: 10vh;
+        
+        & article {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: color.adjust($color-primary, $lightness: 30%);
+            animation: next-page ease-out forwards;
+            animation-range: cover 40% cover 80%;
+            animation-timeline: view();
+
+        }
+        
+        & article:first-child {
+            transform: rotate(-2deg);
+        }
+
+        & article:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        & article:last-child {
+            transform: rotate(4deg);
+        }
+
+        @keyframes next-page {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            40%, 80% {
+                transform: rotate(90deg);
+                // transform: translateY(-100vw);
+
+            }
+        } 
     }
 
 }
