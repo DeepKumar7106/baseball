@@ -1,0 +1,81 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use 'sass:color';
+
+.ball-count {
+    width: 100%;
+    padding: 10vh;
+    margin-block: 2vh;
+    
+    &__header {
+        width: 100%;
+        font-size: $font-size-xlarge;
+        font-weight: 200;
+        width: 60%;
+    }
+    
+    &__static-text {
+        font-size: $font-size-xxlarge;
+        font-weight: 400;
+        color: $color-accent;
+
+    }
+
+    &__counter-wrapper {
+        @include flex-center(row);
+        justify-content: space-between;
+        
+        & > * {
+            width: 40%;
+        }
+    }
+    
+    &__counter {
+        @include flex-center(row);
+        font-size: 30vh;
+    }
+    
+    &__scroll-area {
+        @include flex-center(column);
+        font-size: 2vw;
+        gap: 0.5vh;
+        position: relative;
+        $bg-color: color.adjust($color-primary, $lightness: 40%);
+        background: $bg-color;
+
+        &::after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0%;
+            background-image: 
+                linear-gradient(to bottom,  $bg-color, transparent, $bg-color );
+            ;
+        }
+
+        & span {
+            text-align: center;
+            width: 100%;
+            background: color.adjust($color-primary-lighter, $alpha: -0.2);
+        }
+        
+        & .center-select-span {
+            background: color.adjust($color-primary-lighter, $alpha: -0.4);
+            position: relative;
+            &::after {
+                // align it to center no guess work
+                content: "";
+                width: 15%;
+                aspect-ratio: 1 / 1.618;
+                background: red;
+                position: absolute;
+                top: -35%;
+                // transform: translateY(-50%);
+                left: -10%;
+                clip-path: polygon(0% 0%, 100% 50%, 0% 100%, 0% 0%);
+            }
+        }
+    }
+}

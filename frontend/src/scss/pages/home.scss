@@ -9,6 +9,7 @@ body:has(.home-main) {
     overflow-x: hidden;
 }
 
+// Hero section
 .home-main {
     @include flex-center(column);
     min-height: 100vh;
@@ -65,7 +66,7 @@ body:has(.home-main) {
     }
 }
 
-    
+// how to play 
 .section__typography {
     height: 100vh;
     overflow: hidden;
@@ -152,60 +153,68 @@ body:has(.home-main) {
 
 }
 
+// game mode selector 
 .section__game {
     width: 50%;
     justify-items: center;    
-    // &__mode-wrapper {
-    // }
+    
+    &__mode-wrapper {
+        --mode-radius: 1vh;
+        padding: var(--mode-radius);
+        @include flex-center(column);
+        width: 40vw;
+        min-height: 50vh;
+        background: color.adjust($color-secondary, $lightness: 30%);
+        border-radius: calc(var(--mode-radius) * 2);
+    }
+    
+    &__mode-display {
+        height: 15vh;
+        background: $color-dark;
+        width: 100%;
+        border-radius: var(--mode-radius);
+        margin-block: 2vw 1.5vw;
+        color: $color-primary;
+        padding: 2vh;
+
+        & p {
+            font-size: 5vh;
+            text-align: left;
+        }
+    }
     
     &__buttons {
         --home-mode-length: 10vw;
         @include flex-center(row);
-        background: yellow;
-        border-radius: var(--home-mode-length);
         gap: 1rem;
-        margin-block: 5vw;
-        padding: 1vw;
-        width: fit-content;
+        padding: 2vw;
+        padding-block-start: 4vw;
+        width: 100%;
+        $stripe: color.adjust($color-secondary, $lightness: -35%,  $saturation: -20%, $alpha: -0.5);
+        background-image: 
+            linear-gradient(to bottom, $stripe 2vh, transparent 10px);
+        ;
+        $bgrdsze : 5vh;
+        background-size: $bgrdsze $bgrdsze;
         
-        box-shadow: inset 5px 5px 20px 1px $color-shadow-dark, 
-        5px 5px 23px 0px $color-shadow-dark;
-        
-        
-        & .game-mode {
-            anchor-scope: --home-modes-single;
-            position: relative;
+        & .mode-button {
+            height: var(--home-mode-length);
+            width: var(--home-mode-length);
+            border-radius: var(--home-mode-length);
+            background: color.adjust($color-primary, $lightness: 25%);
+            box-shadow:  5px 5px 20px 5px $color-shadow-dark,
+            5px 5px 5px color.adjust($color-primary, $lightness: 40%) inset;
             
-            & .mode-button {
-                height: var(--home-mode-length);
-                width: var(--home-mode-length);
-                border-radius: var(--home-mode-length);
-                background: $color-primary;
-                anchor-name: --home-modes-single;
-                box-shadow:  5px 5px 20px $color-shadow-dark,
-                5px 5px 5px color.adjust($color-primary, $lightness: 20%) inset;
-                
-                &:active {
-                    transform: translate(5px, 5px);
-                }
+            &:active {
+                transform: translate(5px, 5px);
             }
-            
-            & .mode-label {
-                position: absolute;
-                position-anchor: --home-modes-single;
-                position-area: bottom center; 
-                margin-top: 11vw;
-                text-align: center;
-                
-                font-size: $font-size-small;
-                padding: 0.5rem;
-                width: 100%;
-            }
-            
         }
+            
     }
 }    
 
+
+// score board
 .section__scoreboard {
     justify-items: center;
     text-align: center;
