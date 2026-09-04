@@ -155,8 +155,15 @@ body:has(.home-main) {
 
 // game mode selector 
 .section__game {
-    width: 50%;
-    justify-items: center;    
+    width: 100%;
+    justify-items: center;   
+    align-content: center; 
+    min-height: 100vh;
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)),
+        url('../../../public/imgs/modeBG.png');
+    background-color: black;
+    
     
     &__mode-wrapper {
         --mode-radius: 1vh;

@@ -3,7 +3,7 @@
 @use 'sass:color';
 
 .ball-count {
-    width: 100%;
+    width: 50%;
     padding: 10vh;
     margin-block: 2vh;
     
@@ -24,7 +24,7 @@
     &__counter-wrapper {
         @include flex-center(row);
         justify-content: space-between;
-        
+
         & > * {
             width: 40%;
         }

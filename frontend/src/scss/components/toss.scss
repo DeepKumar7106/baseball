@@ -1,3 +1,9 @@
 @use '../utils/variables' as *;
 @use '../utils/mixins' as *;
 @use 'sass:color';
+
+.toss_section {
+    width: 100vw;
+    height: 100vh;
+    background: color.adjust($color-accent, $lightness: -50%, $saturation: -30%);
+}

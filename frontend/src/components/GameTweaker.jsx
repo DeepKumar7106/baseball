@@ -54,6 +54,7 @@ export default function GameTweaker() {
                             </div>
                         </div>
                     </div>
+                </section>
 
 
                     {/* Ball count selector component */}
@@ -66,7 +67,6 @@ export default function GameTweaker() {
                     {isToss && <Toss 
                         gameDetails = {gameDetails} setGameDetails = {setGameDetails}
                     ></Toss>}
-                </section>
         </>
     )
 }
