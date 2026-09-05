@@ -1,14 +1,16 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-export default function Toss({gameDetails, setGameDetails}) {
+export default function Toss({gameDetails, setGameDetails, isToss}) {
 
-    const [tossMode, setTossMode] = useState("color")
-    const [buttonsVisible, setButtonVisible] = useState(true)
-    const [computerChoice, setComputerChoice] = useState("")
+    const [tossMode, setTossMode] = useState("color") // defines whether choosing to bat/ball or head/tai
+    const [tossDisplayText, setTossDisplayText] = useState("") // stores text
+    const [buttonChosen, setButtonChosen] = useState(false) // defines the visibility of the text '_'
+    const [playerTossResult, setPlayerTossResult] = useState(true) // defines the visibility of the text '_'
     const navigate = useNavigate()
-
+    
     const handleClick = (choice) => {
+        setButtonChosen(true)
         const choiceList = ["red", "blue"]
         if (tossMode === "color") {
             // update the tossMode
@@ -20,21 +22,21 @@ export default function Toss({gameDetails, setGameDetails}) {
             // compare with the user click
             if (choice !== choiceList[toss]) {
                 // user lost the toss 
-                setButtonVisible(false)
+                setPlayerTossResult(false)
                 
                 // let the computer select the inning mode 
                 const computerChoice = computerSelect()
-                setComputerChoice(computerChoice)
-                console.log(gameDetails)
                 setGameDetails({
                     ...gameDetails,
                     inningMode: computerChoice === "ball" ? "batting" : "balling"
                 })
-                console.log(gameDetails)
+
+                setTossDisplayText(`you have lost the toss.:(\n opponent chose ${computerChoice}`)
                 return
             }
-
+            
             // update the UI accordingly
+            setTossDisplayText(`you have won the toss\nRed : Bat\nBlue : Ball`)
         } else {
             // if choice is red then bat or else ball
             // update the data packet to set the choice
@@ -57,37 +59,19 @@ export default function Toss({gameDetails, setGameDetails}) {
     return (
         <>
             <section className="toss_section">
-                <div className="toss_section__display">
-                    <h1>Toss</h1>
-                    <p>Won blah blah</p>
-                </div>
-                {buttonsVisible && <div className="toss_section__wrapper">
-                    <div className="toss_section__buttons">
-                        <div 
-                            className="toss_section__button_box"
-                            onClick={() => handleClick("red")}
-                        >
-                            <button className="red">Red</button>
-                            {tossMode === "inningMode" && <span>Bat</span>}
-                        </div>
-                        <div 
-                            className="toss_section__button_box"
-                            onClick={() => handleClick("blue")}
-                        >
-                            <button className="blue">Blue</button>
-                            {tossMode === "inningMode" && <span>Ball</span>}
-                        </div>
+                <div className={`toss_section__doors left ${isToss ? 'animate-left' : ''}`} ></div>
+                <div className={`toss_section__doors right ${isToss ? 'animate-right' : ''}`}></div>
+                <div className="toss_section__buttons-wrapper">
+                    <div className="toss_section__display">
+                        <p>Choose one button{!buttonChosen && <span>_</span>}</p>
+                        <p>{tossDisplayText}{buttonChosen && <span>_</span>}</p>
+                        {!playerTossResult && <p onClick={() => {navigatePlay(gameDetails)}}>Play</p>}
                     </div>
-                    <p>Choose one {tossMode}</p>
-                </div> }
-
-                {/* player lost the toss */} 
-                { computerChoice && <div className="toss_section__opponent_choice">
-                    <p>The opponent decided to {computerChoice} first! </p>
-                    <button 
-                        onClick={() => {navigatePlay(gameDetails)}}
-                    >Play</button>
-                </div> }
+                    <div className="toss_section__buttons-wrapper__buttons">
+                        <button onClick={() => {handleClick("red")}}></button>
+                        <button onClick={() => {handleClick("blue")}}></button>
+                    </div>
+                </div>
             </section>
         </>
     )

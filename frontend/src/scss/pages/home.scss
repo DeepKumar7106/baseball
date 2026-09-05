@@ -163,6 +163,9 @@ body:has(.home-main) {
         linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)),
         url('../../../public/imgs/modeBG.png');
     background-color: black;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family:  'Silkscreen', monospace;
     
     
     &__mode-wrapper {
@@ -185,7 +188,7 @@ body:has(.home-main) {
         padding: 2vh;
 
         & p {
-            font-size: 5vh;
+            font-size: 4vh;
             text-align: left;
         }
     }
@@ -215,8 +218,28 @@ body:has(.home-main) {
             &:active {
                 transform: translate(5px, 5px);
             }
+        }       
+    }
+
+    &__play {
+        font-family: 'Silkscreen', monospace;
+        border: none;
+        font-size: 5vh;
+        padding: 1vh 5vh;
+        text-align: center;
+        background: color.adjust($color-primary, $alpha: -0.1, $saturation: 50%);
+        border-radius: 2vh;
+        margin-top: 10vh;
+        box-shadow: 5px 5px 30px $color-shadow-dark;
+        transition: all 50ms ease-out;
+
+        &:hover {
+            transform: translateY(-5px);
         }
-            
+
+        &:active {
+            transform: translate(5px, 5px);
+        }
     }
 }    
 

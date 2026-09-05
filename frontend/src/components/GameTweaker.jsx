@@ -58,15 +58,11 @@ export default function GameTweaker() {
 
 
                     {/* Ball count selector component */}
-                    <BallCountSelector></BallCountSelector>
-                    <button 
-                        className="section__game__play"
-                        onClick={handlePlay}    
-                    >
-                            Play</button>
-                    {isToss && <Toss 
-                        gameDetails = {gameDetails} setGameDetails = {setGameDetails}
-                    ></Toss>}
+                    <BallCountSelector handlePlay={handlePlay}></BallCountSelector>
+                    
+                    <Toss 
+                        gameDetails = {gameDetails} setGameDetails = {setGameDetails} isToss = {isToss}
+                    ></Toss>
         </>
     )
 }

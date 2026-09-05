@@ -1,4 +1,4 @@
-export default function BallCountSelector() {
+export default function BallCountSelector({handlePlay}) {
     return (
         <>
             <div className="ball-count">
@@ -21,6 +21,11 @@ export default function BallCountSelector() {
                         <span>7</span>
                     </div>
                 </div>
+                <button 
+                    className="section__game__play"
+                    onClick={handlePlay}    
+                >
+                    Play</button>
             </div>
         </>
     )
