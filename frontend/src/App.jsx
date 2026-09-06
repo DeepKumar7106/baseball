@@ -5,6 +5,7 @@ import Home from "./components/home/Home"
 import Game from "./components/pages/Game"
 import History from "./components/pages/History"
 import Navbar from "./components/utils/navbar"
+import Auth from "./components/pages/Auth"
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/history" element= {<History /> } />
         <Route path="/login" element= {<Login /> } />
         <Route path="/register" element= {<Register /> } />
+        <Route path="/auth" element= {<Auth /> } />
       </Routes>
       
     </BrowserRouter>

@@ -2,10 +2,15 @@
 @use '../utils/variables' as *;
 @use 'sass:color';
 
+$bg-dark-900 : color.adjust($color-accent, $lightness: -55%);
+$bg-dark-600 : color.adjust($color-accent, $lightness: -50%);
+$bg-dark-300 : color.adjust($color-accent, $lightness: -40%, $alpha : -0.2);
+
 .form-main {
     @include flex-center(row);
     width: 100vw;
     height: 100vh;
+    background: $color-light;
 }
 
 body:has(.form-main) nav{
@@ -31,39 +36,73 @@ body:has(.form-main) nav{
 //     outline: auto;
 // }
 
-form {
+.auth-form {
     @include flex-center(column);
-    box-shadow: 5px 5px 20px $color-shadow-dark,
-                5px 5px 20px $color-shadow-light inset,
-                -5px -5px 20px $color-shadow-light;
-    border-radius: 3rem;
-    position: relative;
+    border-radius: 2vh;
     padding: 2rem;
+    background: $bg-dark-900;
+    height: 70vh;
+    width: 25vw;
+    justify-content: start;
     
-    & h1 {
-        color: $color-primary;
+    & h2 {
+        color: $color-accent;
         font-size: $font-size-xlarge;;
-        margin-block: 1rem;
+        // margin-block: 1rem;
         width: 100%;
     }
 
     & > p {
+        color: color.adjust($color-light, $alpha: -0.3);
         width: 100%;
+        
+        & span,
+        & a {
+            text-decoration: none;
+            color: color.adjust($color-accent, $alpha: -0.1);
+        }
     }
+
+    &__nav-wrapper {
+        @include flex-center(row);
+        width: 60%;
+        height: 5vh;
+        background: $bg-dark-600;
+        border-radius: 100vh;
+        color: color.adjust($color-primary-lighter, $alpha : -0.4);
+        margin-block: 2vh;
+
+        & span {
+            width: 50%;
+            height: 100%;
+            text-align: center;
+            align-content: center;
+            font-size: 2.5vh;
+            font-weight: 100;
+        }
+    }
+
+    &__nav-wrapper > .form-span-active {
+        background: $bg-dark-300;
+        color: $color-light;
+        border-radius: 100vh;
+    }
+
 }
-            
+
 input[type=submit] {
-    background: linear-gradient(to right, color.adjust($color-primary, $lightness:15%), $color-primary);
+    background: $color-primary;
     border: none;
     border-radius:  10vw;
     bottom: -2rem;
-    box-shadow: 2px 2px 2px $color-shadow-light inset,
-                -2px -2px 5px color.adjust($color-shadow-dark, $lightness:-10%) inset;
-    color: $color-light;
+    font-family: $font-main;
+    color: $bg-dark-900;
     cursor: pointer;
     font-size: $font-size-base;   
-    padding: 1rem 3rem;
-    position: absolute;
+    padding: 1.5vh;
+    margin-top: auto;
+    align-self: flex-end;
+    width: 10vw;
 }
 
 
@@ -71,28 +110,23 @@ input[type=text],
 input[type=password],
 input[type=email] {
     border: none;
-    border-bottom: 1px solid $color-shadow-dark;
+    background: $bg-dark-300;
     font-size: $font-size-base;
-    font-weight: 100;
     margin-block: 0.5rem;
-    padding: 0.5rem;
+    padding: 1vh 2vh;
+    border-radius: 2vh;
+    width: 100%;
+    color: $color-light;
+    font-family: $font-main;
 }
 
 input[type=text]::placeholder,
 input[type=password]::placeholder,
 input[type=email]::placeholder {
-    opacity: 0.5;
+    opacity: 0.6;
+    color: $color-light;
+    font-weight: 100;
     font-size: $font-size-small;
-}
-
-// logim forgot pass label
-#loginForm label {
-    margin-block-start: 2rem;
-    margin-block-end: 1rem;
-    text-align: left;
-    width: 100%;
-
-    & a {
-        text-decoration: none;
-    }
+    font-family: $font-main;
+    letter-spacing: 1.5px;
 }
