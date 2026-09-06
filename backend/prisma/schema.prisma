@@ -1,17 +1,73 @@
 datasource db {
-  provider        = "sqlite"
+  provider = "sqlite"
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
+enum FriendStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
 
 model User {
-  id        String   @id @default(uuid()) 
+  id        String   @id @default(uuid())
   username  String   @unique
-  email     String   
-  password  String   
+  email     String
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  scores    Score[]
+  gamesWon  Game[]   @relation("UserWonGames")
+
+  sentRequests     Friendship[] @relation("SentRequests")
+  recievedRequests Friendship[] @relation("RecievedRequests")
+
+  @@index([id])
+}
+
+model Friendship {
+  id        String       @id @default(uuid())
+  status    FriendStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  senderID   String
+  receiverID String
+
+  sender   User @relation("SentRequests", fields: [senderID], references: [id], onDelete: Cascade)
+  reciever User @relation("RecievedRequests", fields: [receiverID], references: [id], onDelete: Cascade)
+
+  @@unique([senderID, receiverID])
+  @@index([senderID])
+  @@index([receiverID])
+}
+
+model Game {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  scores    Score[]
+
+  winningPlayerID String?
+  winner          User?   @relation("UserWonGames", fields: [winningPlayerID], references: [id], onDelete: SetNull)
+
+  @@index([id])
+}
+
+model Score {
+  playerID     String
+  gameID       String
+  createdAt    DateTime @default(now())
+  inningNumber Int
+  ballsPlayed  Int
+  totalScore   Int
+
+  player User @relation(fields: [playerID], references: [id], onDelete: Cascade)
+  game   Game @relation(fields: [gameID], references: [id], onDelete: Cascade)
+
+  @@id([playerID, gameID])
+  @@index([playerID])
+  @@index([gameID])
 }
