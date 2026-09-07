@@ -2,16 +2,10 @@ import Toss from "./home/Toss";
 import BallCountSelector from "./BallCountSelector";
 import { useState } from "react";
 
-export default function GameTweaker() {
+export default function GameTweaker({ gameDetails, setGameDetails }) {
     const [isMode, setIsMode] = useState(false)
     const [isToss, setIsToss] = useState(false)
-    const [gameDetails, setGameDetails] = useState({
-        "playerName" : "Konata", // hard coded for the testing puprose
-        "opponent" : "cpu", // default will be against the bot
-        "gameMode": "singlePlayer", // default mode
-        "ballCount": 15, 
-        "inningMode": "batting", // default set to batting to prevent any issues
-    })
+   
     
     const handleSinglePlayer = () => {
         // check weather the user is logged in else redirect to login page
@@ -58,7 +52,7 @@ export default function GameTweaker() {
 
 
                     {/* Ball count selector component */}
-                    <BallCountSelector handlePlay={handlePlay}></BallCountSelector>
+                    <BallCountSelector handlePlay={handlePlay} gameDetails={gameDetails} setGameDetails={setGameDetails}></BallCountSelector>
                     
                     <Toss 
                         gameDetails = {gameDetails} setGameDetails = {setGameDetails} isToss = {isToss}

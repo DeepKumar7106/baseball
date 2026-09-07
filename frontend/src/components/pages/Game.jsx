@@ -11,6 +11,7 @@ export default function Game() {
     const location = useLocation()
 
     // default values to prevent crash during loading via URL
+    // no data from the home :(
     const defaultGameDetails = {
         playerName: user?.username || "Konata",
         opponent: "cpu",
