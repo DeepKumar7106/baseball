@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Scoreboard from "./Scoreboard";
-import HomeHero from "./HomeHero";
-import GameTweaker from "../GameTweaker";
-import { useAuth } from "../../context/AuthContext";
+import Scoreboard from "../components/home/Scoreboard";
+import HomeHero from "../components/home/HomeHero";
+import GameTweaker from "../components/GameTweaker";
+import { useAuth } from "../context/AuthContext";
 
 export default function Home() { 
     const { user, isAuthenticated } = useAuth()

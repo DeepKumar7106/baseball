@@ -23,7 +23,7 @@ export default function MainMenu() {
                     <p className="section__main-menu__profile__name">{user.username}</p>
                 </div>}
                 <div className="section__main-menu__hero-wrapper">
-                    <img src="../src/assets/konata-hero.png" alt="konata" loading="lazy"/></div>
+                    <img src="/imgs/konata-hero.png" alt="konata" loading="lazy"/></div>
             </div>
         </section>
         </>

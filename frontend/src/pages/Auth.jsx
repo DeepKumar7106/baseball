@@ -1,4 +1,4 @@
-import { useAuth } from "../../context/AuthContext"
+import { useAuth } from "../context/AuthContext"
 import { useProfanityChecker } from "glin-profanity/react"
 import { useState } from "react"
 

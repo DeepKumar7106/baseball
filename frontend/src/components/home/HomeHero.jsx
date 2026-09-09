@@ -6,7 +6,7 @@ export default function HomeHero() {
             <section className="section__hero">
                 <span className="section__hero__text">base ball</span>
                 <span className="section__hero__image">
-                    <img src="../src/assets/konata-hero.png" alt="konata" loading="lazy" />
+                    <img src="/imgs/konata-hero.png" alt="konata" loading="lazy" />
                 </span>
                 <span className="section__hero__text-outline">base ball</span>
             </section>

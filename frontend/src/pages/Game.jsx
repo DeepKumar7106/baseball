@@ -1,8 +1,8 @@
-import { useState } from "react";
-import Player from "./Player";
-import { checkStrike, getOpponentInput, checkWinner } from "../../scripts/game.utils";
+import { useState } from "react"
+import Player from "../components/Player"
+import { checkStrike, getOpponentInput, checkWinner } from "../scripts/game.utils";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext"
 export default function Game() {
     // destructuring the useAuth
     const { user, isAuthenticated } = useAuth()
