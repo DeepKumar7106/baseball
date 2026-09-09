@@ -69,13 +69,13 @@ body:has(.home-main) {
 // how to play 
 .section__typography {
     height: 100vh;
-    overflow: hidden;
+    
     &__wrapper {
-        position: sticky;
         @include flex-center(row);
-        width: 50vw;
+        width: 60vw;
         gap: 1rem;
         min-height: 100vh;
+        padding: 2rem;
     }
     
     &__nav-wrapper {
@@ -110,10 +110,10 @@ body:has(.home-main) {
     &__information {
         grid-area: information;
         height: 50vh;
-        width: 80%;
+        width: 100%;
         position: relative;
         margin-inline-start: 10vh;
-        
+
         & article {
             position: absolute;
             top: 0;
@@ -121,22 +121,82 @@ body:has(.home-main) {
             height: 100%;
             width: 100%;
             background: color.adjust($color-primary, $lightness: 30%);
-            animation: next-page ease-out forwards;
-            animation-range: cover 40% cover 80%;
-            animation-timeline: view();
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
 
+            background-image: url('/imgs/cloth.png');
+            background-repeat: no-repeat;
+            background-position: cover;
+            filter: saturate(2);
+
+            border: 10px solid color.adjust($color-light, $lightness: 20%);
+            box-shadow: 5px 5px 20px 0px $color-shadow-dark;
+
+            
+            & h2 {
+                text-align: center;
+                font-size: 5vh;
+                border-bottom: 1px solid $color-dark;
+            }
+            
+            & p {
+                text-align: left;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                font-size: 3vh;
+                margin-block: 0.5vh;
+            }
+            
+            & .article-buttons {    
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                margin-top: auto;
+            }
+            & button {
+                border: none;
+                background: $color-primary;
+                padding: 1vw 2vw;
+                font-size: 3vh;
+                border-radius: 1vw;
+                width: 20vh;
+            }
+            
+            & .button-next {
+                justify-self: end;
+                margin-left: auto;
+            }
         }
         
+        // PLAY
         & article:first-child {
             transform: rotate(-2deg);
         }
-
+        
+        // TOSS
         & article:nth-child(even) {
             transform: rotate(2deg);
         }
-
+        
+        // SELECT
         & article:last-child {
             transform: rotate(4deg);
+            
+            & p img {
+                height: 5vh;
+                aspect-ratio: 1 / 1;
+                object-fit: cover;
+                border-radius: 100vh;
+            }
+        }
+        
+        & .article-shift {
+            display: none;
+            // animation: next-page ease-out forwards;
+            animation-range: cover 40% cover 80%;
+            animation-timeline: view();
         }
 
         @keyframes next-page {

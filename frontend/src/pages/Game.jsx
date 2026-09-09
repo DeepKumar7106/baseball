@@ -34,7 +34,6 @@ export default function Game() {
     const [strikeCount, setStrikeCount] = useState(0)
     const maxBalls = gameDetails.ballCount
     const [ballCount, setBallCount] = useState(maxBalls) 
-    console.log(typeof(maxBalls), maxBalls + 1)
     
     // name is hardcoded for testing, future note to update them over params
     const [player, setPlayer] = useState({
