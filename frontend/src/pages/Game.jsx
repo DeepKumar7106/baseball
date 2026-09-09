@@ -34,6 +34,7 @@ export default function Game() {
     const [strikeCount, setStrikeCount] = useState(0)
     const maxBalls = gameDetails.ballCount
     const [ballCount, setBallCount] = useState(maxBalls) 
+    console.log(typeof(maxBalls), maxBalls + 1)
     
     // name is hardcoded for testing, future note to update them over params
     const [player, setPlayer] = useState({
@@ -61,7 +62,6 @@ export default function Game() {
                 // one inning has came to an end, reset the variables
                 // setStrikeCount(0)
                 setGameplayMode(false)
-                setBallCount(maxBalls + 1)
 
                 // set the target
                 setTarget(mode === "batting" ? player.score : opponent.score)
@@ -135,6 +135,8 @@ export default function Game() {
             // redirect to home page
             navigate('/')
         }
+        // reset the ball count 
+        setBallCount(maxBalls)
         
         // allow the player input
         setGameplayMode(true)
