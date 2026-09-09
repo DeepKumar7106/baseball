@@ -1,6 +1,9 @@
 import Toss from "./home/Toss";
 import BallCountSelector from "./BallCountSelector";
 import { useState } from "react";
+import cpu from '/imgs/cpu.svg'
+import player from '/imgs/player.svg'
+import multiplayer from '/imgs/multiplayer.svg'
 
 export default function GameTweaker({ gameDetails, setGameDetails }) {
     const [isMode, setIsMode] = useState(false)
@@ -40,11 +43,13 @@ export default function GameTweaker({ gameDetails, setGameDetails }) {
                                 className="game-mode mode-button single"
                                 onClick={handleSinglePlayer}
                             >
+                                <img src={cpu} alt="against cpu" />
                             </div>
                             <div className="game-mode mode-button friend">
-
+                                <img src={player} alt="against player" />
                             </div>
                             <div className="game-mode mode-button team">
+                                <img src={multiplayer} alt="Team mode" />
                             </div>
                         </div>
                     </div>

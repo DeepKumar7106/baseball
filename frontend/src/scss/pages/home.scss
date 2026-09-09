@@ -274,11 +274,20 @@ body:has(.home-main) {
             background: color.adjust($color-primary, $lightness: 25%);
             box-shadow:  5px 5px 20px 5px $color-shadow-dark,
             5px 5px 5px color.adjust($color-primary, $lightness: 40%) inset;
-            
+            @include flex-center(row);
+
+
             &:active {
                 transform: translate(5px, 5px);
             }
-        }       
+        }   
+        
+        & img {
+            height: 90%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 100vh;
+        }
     }
 
     &__play {
