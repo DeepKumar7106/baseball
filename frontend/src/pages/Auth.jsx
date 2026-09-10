@@ -21,7 +21,7 @@ export default function Auth() {
                 return
             }
 
-            const response = await fetch("http://localhost:5000/api/login", {
+            const response = await fetch("http://localhost:5000/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",
@@ -64,7 +64,7 @@ export default function Auth() {
             // if the username is valid and pw are confirmed, send data to backend
 
             // define the packet (address and msg)
-            const response = await fetch("http://localhost:5000/api/register", {
+            const response = await fetch("http://localhost:5000/api/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",

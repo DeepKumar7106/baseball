@@ -12,8 +12,8 @@ app.use(express.json())
 
 const PORT = process.env.PORT || 5000;
 
-app.use('/', auth);
-app.use('/', game);
+app.use('/api/auth', auth);
+app.use('/api/game', game);
 
 app.listen(PORT, () => {
     console.log(` Server is successfully running on http://localhost:${PORT}`);

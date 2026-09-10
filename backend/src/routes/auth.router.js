@@ -5,7 +5,7 @@ import { prisma } from "../lib/prisma.js";
 
 const router = Router()
 
-router.post('/api/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     const {username, password, email} = req.body
 
     if (!username || !password || !email) {
@@ -50,7 +50,7 @@ router.post('/api/register', async (req, res) => {
     }
 })
 
-router.post('/api/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     // destructuring the data from the frontend
     const { username, password} = req.body
     
