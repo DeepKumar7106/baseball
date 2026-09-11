@@ -27,7 +27,7 @@ export default function HomeHero() {
                     <div className="section__typography__information ">
                         {/* PLAY */}
                         <article
-                            className={currentIndex < 1 && "article-shift"}
+                            className={currentIndex < 1 ? "article-shift" :""}
                         >
                             <h2>play</h2>
                             <p>
@@ -40,7 +40,7 @@ export default function HomeHero() {
 
                         {/* TOSS */}
                         <article
-                            className={currentIndex < 2 && "article-shift"}
+                            className={currentIndex < 2 ? "article-shift" : ""}
                         >
                             <h2>toss</h2>
                             <p>
@@ -54,7 +54,7 @@ export default function HomeHero() {
 
                         {/* SELECT */}
                         <article
-                            className={currentIndex < 3 && "article-shift"}
+                            className={currentIndex < 3 ? "article-shift" : ""}
                         >
                             <h2>select</h2>
                             <p>pick your match mode:</p> 

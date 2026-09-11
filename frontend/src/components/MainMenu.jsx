@@ -4,7 +4,6 @@ export default function MainMenu() {
     
     // destructuring the useAuth
     const { user, isAuthenticated } = useAuth()
-    console.log(user)
     return (
         <>
         <section className="section__main-menu">

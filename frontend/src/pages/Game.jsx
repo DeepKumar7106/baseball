@@ -3,7 +3,8 @@ import Player from "../components/Player"
 import { checkStrike, getOpponentInput, checkWinner } from "../scripts/game.utils";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"
-import { postScore } from "../scripts/game.api"
+import { postScore, postCpuScore, patchWinner } from "../scripts/game.api"
+
 
 
 export default function Game() {
@@ -17,8 +18,6 @@ export default function Game() {
         // fetches the game information from the home
     const gameDetails = location.state || defaultGameDetails
     const maxBalls = gameDetails.ballCount
-    
-    console.log(gameDetails.gameID)
 
     // default values to prevent crash during loading via URL
     // no data from the home :(
@@ -96,16 +95,24 @@ export default function Game() {
     }
 
     const checkTargetReached = (playerScore, opponentScore) => {
-        if (inningCount === 1) {
-            const currentBatterScore = mode === "batting" ? playerScore : opponentScore
-            console.log(currentBatterScore)
-            if (currentBatterScore >= target) {
-                const winner = mode === "batting" ? player.name : opponent.name
-                setInningEndString(`${winner} won the game`)
-                setGameplayMode(false)
+        if (inningCount !== 1) return
+
+        const currentBatterScore = mode === "batting" ? playerScore : opponentScore
+        if (currentBatterScore >= target) {
+            const winner = mode === "batting" ? player.name : opponent.name
+            setInningEndString(`${winner} won the game`)
+            setGameplayMode(false)
+
+            // pass the winner to backend
+            if (!gameDetails.isOnline) {
+                const data = patchWinner({
+                    winningPlayerID : winner === player.name ? user.id : process.env.CPU_PLAYER_ID,
+                    gameID: gameDetails.gameID
+                })
             }
         }
     }
+
     // the actaul gameplay
     const handlePlayerClick = (num) => {
         try {
@@ -136,9 +143,16 @@ export default function Game() {
 
     const handleInningEnd = () => {
         if (inningCount === 1) {
-            const winner = (player.score > opponent.score) ? player : opponent
-            setInningEndString(`${winner.name} won the game`)
+            const winner = (player.score > opponent.score) ? player.name : opponent.name
+            setInningEndString(`${winner} won the game`)
             setGameplayMode(false)
+
+            if (!gameDetails.isOnline) {
+                const data = patchWinner({
+                    winningPlayerID : winner === player.name ? user.id : process.env.CPU_PLAYER_ID,
+                    gameID: gameDetails.gameID
+                })
+            }
         } else {
             setGameplayMode(false)
             const currentPlayerScore = (mode === "batting" ? player.score : opponent.score)
@@ -159,13 +173,25 @@ export default function Game() {
             const curretBallCount = Number(maxBalls) - Number(ballCount)
             const scoreRequirements = {
                 "playerID" : user.id,     
-                "gameID" : gameDetails.gameId,           
+                "gameID" : gameDetails.gameID,           
                 "inningNumber" : 2,
                 "ballsPlayed" : curretBallCount,
                 "totalScore" : player.score
             }
 
             handlePostScore(scoreRequirements)
+
+            if (!gameDetails.isOnline) {
+                const cpuScoreDetails = {
+                    "playerID": "c77dd9a9-77c1-4fa6-8c2b-b88078627891", // fuck u id y cant you be secret, bothered me for an hour
+                    "gameID": gameDetails.gameID, 
+                    "inningNumber": 2, 
+                    "ballsPlayed": curretBallCount, 
+                    "totalScore": opponent.score
+                }
+
+                handlePostCpuScore(cpuScoreDetails)
+            }
             
             // redirect to home page
             navigate('/')
@@ -183,20 +209,22 @@ export default function Game() {
 
     const handlePostScore = async (scoreDetails) => {
         try {
-            const result = await postScore(scoreDetails)
-
-            const data = await result.json()
-
-            if (!result.ok) {
-                throw new Error(data.error || "Score upload failed");
-            }
+            postScore(scoreDetails)
         } catch (error) {
-            console.error("Error:", err.message)
+            console.error("Error:", error)
+        }
+    }
+
+    const handlePostCpuScore = async (scoreDetails) => {
+        try {
+            postCpuScore(scoreDetails)
+        } catch (error) {
+            console.error("Error: Failed to push CPU score", error)
         }
     }
 
     if (!isAuthenticated) {
-        navigate('\login')
+        navigate('/login')
         return
     }
 

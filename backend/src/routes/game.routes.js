@@ -4,7 +4,6 @@ import { prisma } from "../lib/prisma.js"
 const router = Router()
 
 // data uploaded to game table
-// game needs winning player id
 router.post('/', async (req, res) => { 
     try {
         const newGame = await prisma.game.create({
@@ -23,32 +22,26 @@ router.post('/', async (req, res) => {
 
 router.patch('/:id/winner', async (req, res) => {
     const { id } = req.params
-    const { winningPlayerId } = req.body
-
+    const { winningPlayerID } = req.body
     
     try {
-        // all data validated
-        // check whether user exist?
-        if (winningPlayerId) {
-            const isPlayer = await prisma.user.findFirst({
-                where : {
-                    id : winningPlayerId
-                }
-            })
-            
-            if (!isPlayer) {
-                return res.status(400).json({ error : "No such player exists" })
-            }
-        }
+        // verify the game
+        const existingGame = await prisma.game.findUnique({
+            where: { id }
+        })
         
-        // user is valid
-        const updatedGame = await prisma.game.create ({
+        if (!existingGame) {
+            return res.status(404).json({ error: 'Game not found' });
+        }
+
+        const updatedGame = await prisma.game.update ({
             where : { id },
             data: {
-                winningPlayerID : winningPlayerId || null,
+                winningPlayerID : winningPlayerID || null,
             }
         })
         
+
         return res.status(201).json({
             success : true,
             message : "Game details uploaded",
