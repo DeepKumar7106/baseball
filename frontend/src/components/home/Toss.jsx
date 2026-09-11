@@ -7,6 +7,7 @@ export default function Toss({gameDetails, setGameDetails, isToss}) {
     const [tossDisplayText, setTossDisplayText] = useState("") // stores text
     const [buttonChosen, setButtonChosen] = useState(false) // defines the visibility of the text '_'
     const [playerTossResult, setPlayerTossResult] = useState(true) // defines the visibility of the text '_'
+    const [loading, setLoading] = useState(false) // loading screen
     const navigate = useNavigate()
     
     const handleClick = (choice) => {
@@ -52,8 +53,34 @@ export default function Toss({gameDetails, setGameDetails, isToss}) {
         }
     }
 
-    const navigatePlay = (details = gameDetails) => {
-        navigate(`/game`, { state: details })
+    const navigatePlay = async (details = gameDetails) => {
+        setLoading(true) 
+
+        try {
+            const response = await fetch ('http://localhost:5000/api/game', {
+                method: "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify({})
+
+            })
+            const data = await response.json()
+
+            if (!response.ok) {
+                throw new Error(`Error during creating game: ${data.error}`);
+            }
+            navigate(`/game`, { 
+                state:  {
+                    ...details,
+                    gameID : data.gameID
+                }
+            })
+        } catch (error) {
+            console.error("Failed to start local game:", err);
+        } finally {
+          setLoading(false);
+        }
     }
 
     return (
@@ -63,10 +90,11 @@ export default function Toss({gameDetails, setGameDetails, isToss}) {
                 <div className={`toss_section__doors right ${isToss ? 'animate-right' : ''}`}></div>
                 <div className="toss_section__buttons-wrapper">
                     <div className="toss_section__display">
-                        <p>Choose one button{!buttonChosen && <span>_</span>}</p>
-                        <p>{tossDisplayText}{buttonChosen && <span>_</span>}</p>
-                        {!playerTossResult && <p onClick={() => {navigatePlay(gameDetails)}}>Play</p>}
-                    </div>
+                        {!loading ? <div className="toss_section__display-text-wrapper">
+                            <p>Choose one button{!buttonChosen && <span>_</span>}</p>
+                            <p>{tossDisplayText}{buttonChosen && <span>_</span>}</p>
+                            {!playerTossResult && <p onClick={() => {navigatePlay(gameDetails)}}>Play</p>}
+                        </div> : <p>Creatina a game.....</p>}                    </div>
                     <div className="toss_section__buttons-wrapper__buttons">
                         <button onClick={() => {handleClick("red")}}></button>
                         <button onClick={() => {handleClick("blue")}}></button>

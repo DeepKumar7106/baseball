@@ -5,13 +5,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"
 import { postScore } from "../scripts/game.api"
 
-// const handlePostScore = async (scoreDetails) {
-//     try {
-//         const result = await postScore(scoreDetails)
-//     } catch (error) {
-//         console.error("Error:", err.message)
-//     }
-// }
 
 export default function Game() {
     // destructuring the useAuth
@@ -20,6 +13,12 @@ export default function Game() {
     const location = useLocation()
     // redirecting hook
     const navigate = useNavigate()
+    
+        // fetches the game information from the home
+    const gameDetails = location.state || defaultGameDetails
+    const maxBalls = gameDetails.ballCount
+    
+    console.log(gameDetails.gameID)
 
     // default values to prevent crash during loading via URL
     // no data from the home :(
@@ -29,12 +28,8 @@ export default function Game() {
         ballCount: 15,
         inningMode: "batting",
         isOnline: false,
-        gameId: null
+        gameId: gameDetails.gameID,
     };
-
-    // fetches the game information from the home
-    const gameDetails = location.state || defaultGameDetails
-    const maxBalls = gameDetails.ballCount
 
 
     // if invalid data throw error screen
@@ -134,6 +129,9 @@ export default function Game() {
 
     useEffect(() => {
         if (!gameDetails.isOnline) return
+
+        // online fetch
+
     }, [gameDetails.isOnline])
 
     const handleInningEnd = () => {
