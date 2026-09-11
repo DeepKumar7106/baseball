@@ -151,12 +151,14 @@ body:has(.game-main) nav {
         min-height: 2ch;
     }
     
-    &__details .center span {
+    &__details .center button {
         font-size: 3vh;
         background-color: $color-primary;
         color: $color-dark;
         padding-inline: 1vh;
         border-radius: 1vh;
+        border: none;
+        font-family: 'Silkscreen', $font-main;
         text-transform: capitalize;
     }
 
