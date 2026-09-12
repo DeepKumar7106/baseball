@@ -58,18 +58,19 @@ export default function Game() {
     const [ctaButton, setCtaButton] = useState("Continue") // defines the button on the display
     
     const processTurn = (playerInput, opponentInput) => {
+        // check for strike
+        const isStrike = checkStrike(playerInput, opponentInput)
+        const nextStrikeCount = isStrike ? strikeCount + 1 : 0
+        const nextBallCount = ballCount - 1
+
         // set both players input
         setPlayerInput(playerInput)
         setOppnInput(opponentInput)
+        setStrikeCount(nextStrikeCount)
+        setBallCount(nextBallCount)
 
-        // check for strike
-        const isStrike = checkStrike(playerInput, opponentInput)
         
-        if (isStrike) {
-            setStrikeCount(count => count + 1)
-        } else {
-            setStrikeCount(0)
-
+        if (!isStrike){
             if (mode == "batting") {
                 setPlayer((prev) => {
                     const newScore = prev.score + playerInput
@@ -91,7 +92,9 @@ export default function Game() {
             }
         }
 
-        setBallCount((count) => count - 1)
+        if (nextBallCount === 0 || nextStrikeCount === 3) {
+            handleInningEnd()
+        }
     }
 
     const checkTargetReached = (playerScore, opponentScore) => {
@@ -118,10 +121,6 @@ export default function Game() {
         try {
             if (!gameplayMode) return
 
-            if (ballCount === 1 || strikeCount === 2) {
-                handleInningEnd()
-                return
-            }
 
             if (!gameDetails.isOnline) {
                 const cpuMove = Math.floor(Math.random() * 6) + 1
@@ -202,6 +201,8 @@ export default function Game() {
         setBallCount(maxBalls)
         setGameplayMode(true)
         setStrikeCount(0)
+        setPlayerInput(0)
+        setOppnInput(0)
         setCtaButton("home")
         setMode(prevMode => prevMode === "batting" ? "balling" : "batting" ) // i am stoopid
         if (!inningCount) setInningCount(1)
