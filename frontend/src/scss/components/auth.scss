@@ -5,12 +5,47 @@
 $bg-dark-900 : color.adjust($color-accent, $lightness: -55%);
 $bg-dark-600 : color.adjust($color-accent, $lightness: -50%);
 $bg-dark-300 : color.adjust($color-accent, $lightness: -40%, $alpha : -0.2);
+$form-width : 25vw;
 
 .form-main {
-    @include flex-center(row);
+    @include flex-center(column);
     width: 100vw;
     height: 100vh;
     background: $color-light;
+    anchor-name: --form-main;
+
+    &__message {
+        width: $form-width;
+        padding: 1rem;
+        @include flex-center(row);
+        justify-content: space-between;
+        background-color: color.adjust($color-primary, $lightness: 10%, $alpha: -0.3);
+        position: absolute;
+        position-anchor: --form-main;
+        top: calc(anchor(top) + 4%);
+        border-radius: 2.5vh;
+        border: 0.3vh solid $color-secondary;
+        font-size: 2.5vh;
+
+        & span {
+            height: 0.1vh;
+            width: 4vh;
+            background-color: $bg-dark-900;
+            transform: rotate(45deg);
+            display: inline-block;
+
+            &::after {
+                content: "";
+                height: 0.1vh;
+                width: 4vh;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: $bg-dark-900;
+                transform: rotate(90deg);
+            }
+        }
+    }
 }
 
 body:has(.form-main) nav{
@@ -39,10 +74,10 @@ body:has(.form-main) nav{
 .auth-form {
     @include flex-center(column);
     border-radius: 2vh;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     background: $bg-dark-900;
-    height: 70vh;
-    width: 25vw;
+    height: 75vh;
+    width: $form-width;
     justify-content: start;
     
     & h2 {
@@ -81,13 +116,21 @@ body:has(.form-main) nav{
             font-weight: 100;
         }
     }
-
+    
     &__nav-wrapper > .form-span-active {
         background: $bg-dark-300;
         color: $color-light;
         border-radius: 100vh;
     }
+    
+}
 
+.form-client-errors {
+    width: 100%;
+    font-weight: 100;
+    font-size: 2vh;
+    font-family: sans-serif;
+    color: #f00;
 }
 
 input[type=submit] {
@@ -117,7 +160,7 @@ input[type=email] {
     border-radius: 2vh;
     width: 100%;
     color: $color-light;
-    font-family: $font-main;
+    font-family: monospace;
 }
 
 input[type=text]::placeholder,

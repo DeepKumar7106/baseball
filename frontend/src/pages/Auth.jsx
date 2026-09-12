@@ -1,13 +1,16 @@
 import { useAuth } from "../context/AuthContext"
 import { useProfanityChecker } from "glin-profanity/react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function Auth() {
     const [isLogin, setIsLogin] = useState(true)
     const [passwordMismatch, setPasswordMismatch] = useState(false)
     const { result, checkText} = useProfanityChecker({detectLeetspeak: true})
-    const [formError, setFromError] = useState("")
+    const [message, setMessage] = useState("")
     const { login } = useAuth()
+
+    const navigate = useNavigate()
 
     // login function
     const handleLogin = async (e) => {
@@ -39,17 +42,19 @@ export default function Auth() {
             // log the user in 
             login(data.token, data.user)
             
-            console.log("Success! Logged");
-
+            setMessage(data.message)
+            
+            navigate('/')
         } catch (error) {
+            setMessage(error)
             console.log(`Error during login: ${error}`)
         }
     }
-
+    
     // register function
     const handleRegister = async (e) => {
         e.preventDefault(); 
-
+        
         try {
             const formData = new FormData(e.target); 
             const formValues = Object.fromEntries(formData.entries()); 
@@ -58,11 +63,11 @@ export default function Auth() {
             // validating both pw are same
             const isMismatch = password !== confirmPassword
             setPasswordMismatch(isMismatch)
-
-            if (result?.containsProfanity && isMismatch) return
-
+            
+            if (result?.containsProfanity || isMismatch) return
+            
             // if the username is valid and pw are confirmed, send data to backend
-
+            
             // define the packet (address and msg)
             const response = await fetch("http://localhost:5000/api/auth/register", {
                 method: "POST",
@@ -77,23 +82,33 @@ export default function Auth() {
             if (!response.ok) {
                 throw new Error(data.error || "Registration failed.");
             }
-    
-            console.log("Success! Account created:", data);
-
+            
+            setMessage(data.message)
+            setIsLogin(true)
+            
         } catch (error) {
+            setMessage(error)
             console.error("An error occurred during processing:", error);
         }
     }
     
     const switchToLogin = () => {
+        setMessage("")
         setIsLogin(true)
     }
     const switchToRegister = () => {
+        setMessage("")
         setIsLogin(false)
     }
+
+
     return (
         <>
             <main className="form-main">
+                {message && <p
+                    onClick={() => {setMessage("")}}
+                    className="form-main__message"
+                >{typeof message === "object" ? message.message : message}<span></span></p>}
                 <form 
                     onSubmit={isLogin ? handleLogin : handleRegister}
                     method="post" 
@@ -109,12 +124,12 @@ export default function Auth() {
                     </p>
                     <div className="auth-form__nav-wrapper">
                         <span 
-                            onClick={!isLogin && switchToLogin} 
-                            className={isLogin && "form-span-active"}
+                            onClick={!isLogin ? switchToLogin : undefined} 
+                            className={isLogin ? "form-span-active" : ""}
                         >login</span>
                         <span 
-                            onClick={isLogin && switchToRegister}
-                            className={!isLogin && "form-span-active"}
+                            onClick={isLogin ? switchToRegister : undefined}
+                            className={!isLogin ? "form-span-active" : ""}
                         >register</span>
                     </div>
 
@@ -127,7 +142,7 @@ export default function Auth() {
                         maxLength={32}
                         onChange={(e) => {checkText(e.target.value)}}
                     />
-                    {(!isLogin && result?.containsProfanity) && <span>Use appropirate usernames</span>}
+                    {(!isLogin && result?.containsProfanity) && <span className="form-client-errors">Use appropirate usernames</span>}
                     <input 
                         type="password" 
                         id="registerInputTextPassword"  
@@ -150,7 +165,7 @@ export default function Auth() {
                         minLength={8} 
                         maxLength={32}
                     />}
-                    {passwordMismatch && <span>Passowrd Mismatch</span>}
+                    {(!isLogin && passwordMismatch) && <span className="form-client-errors">Passowrd Mismatch</span>}
                     
                     {!isLogin && <input 
                         type="email" 

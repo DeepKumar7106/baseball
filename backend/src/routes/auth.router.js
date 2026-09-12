@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
 
         return res.status(201).json({
             success: true,
-            message: "User created",
+            message: "User created, You can Login now",
             userId: newUser.id
         })
 
@@ -90,7 +90,9 @@ router.post('/login', async (req, res) => {
         
         
         // return the token and user details
-        res.json({
+        return res.status(200).json({
+            success: true,
+            message: "You are logged in",
             token,
             user : { id: user.id, username: user.username },
         })
