@@ -1,0 +1,95 @@
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+@use 'sass:color';
+
+
+$image-height: 25vh;
+
+.player-page-main {
+    width: 50vw;
+    height: 100vh;
+
+}
+
+.player-profile-section {
+    @include flex-center(column);
+    padding: 1vh;
+    width: 100%;
+
+    &__nav {
+        width: 100%;
+        flex-direction: row;
+        // justify-content: space-between;
+        justify-content: start;
+    
+        & button {
+            background-color: $color-primary;
+            border: none;
+            border-radius: 100vh;
+            padding: 0.5vh 4vh;
+            font-size: $font-size-base;
+            color: $color-light;
+        }
+    }
+
+    &__profile {
+        @include flex-center(row);
+        justify-content: space-between;
+        width: 100%;
+        padding: 1vh;
+        margin: 1vh;
+        gap: 2vh;
+    
+    }
+
+    &__profile-img-box {
+        height: $image-height;
+        aspect-ratio: 1 / 1;
+
+        background: color.adjust($color-accent, $lightness: 20%);
+    }
+
+    &__player-details {
+        flex: 1;
+        
+        @include flex-center(column);
+        justify-content: space-around;
+        align-items: start;
+        height: $image-height;
+
+        &__text {
+            & h2,
+            & h3 {
+                font-size: 4vh;
+                font-weight: 100;
+                font-style: normal;
+            }
+            & h3 {
+                color: $color-shadow-dark;
+                font-size: 2vh;
+            }
+        }
+        
+        &__button-wrapper {
+            @include flex-center(row);
+            gap: 2vh;
+            justify-self: end;
+        }
+        &__button {
+            width: 20vh;
+            padding: 1vh 4vh;
+            background: $color-accent;
+            border: none;
+            border-radius: 100vh;
+            color: $color-light;
+            font-size: 3vh;
+        }
+    }
+
+    &__player-stats {
+        & table  {
+            width: 20vh;
+            font-size: 2.5vh;
+        }
+    }
+}
