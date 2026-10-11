@@ -15,6 +15,7 @@ enum FriendStatus {
 model User {
   id        String   @id @default(uuid())
   username  String   @unique
+  playerTag String   @unique
   email     String
   password  String
   createdAt DateTime @default(now())
@@ -26,6 +27,7 @@ model User {
   recievedRequests Friendship[] @relation("RecievedRequests")
 
   @@index([id])
+  @@index([playerTag])
 }
 
 model Friendship {

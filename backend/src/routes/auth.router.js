@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken'
 import { prisma } from "../lib/prisma.js";
+import { generatePlayerTag, generatePlayerTagHelper } from "../controllers/playerTag.js";
 
 const router = Router()
 
@@ -21,11 +22,13 @@ router.post('/register', async (req, res) => {
             where: {
                 username: username 
             }
-        });
+        })
 
         if (existingUser) {
             return res.status(400).json({ error: "Username already registered." });
         }
+        
+        const playerTag = await generatePlayerTagHelper()
 
         const saltRound = 10
         const hashedPassword = await bcrypt.hash(password, saltRound)
@@ -35,6 +38,7 @@ router.post('/register', async (req, res) => {
                 username: username,
                 password: hashedPassword,
                 email: email,
+                playerTag: playerTag,
             }
         })
 

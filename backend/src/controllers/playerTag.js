@@ -1,4 +1,5 @@
-// aaa1a11a 
+import { prisma } from "../lib/prisma.js"
+
 /**
  * Processes a tag and returns its Validity
  * 
@@ -94,10 +95,10 @@ const generateAlphabets = (digitSum) => {
 
     const chars = Object.keys(characterMap)
     const charsLength = chars.length - 10
-    const MAX_ATTEMPS = 100
+    const MAX_ATTEMPTS = 100
     let totalSum = 0
 
-    while (attempts < MAX_ATTEMPS) {
+    while (attempts < MAX_ATTEMPTS) {
         attempts++
         selectedChars = [] // new empty list
         let testSum = digitSum
@@ -166,7 +167,28 @@ const generatePlayerTag = () => {
     return playerTag
 }
 
-export {validatePlayerTag, generatePlayerTag}
+const generatePlayerTagHelper = async () => {
+    const MAX_ATTEMPTS = 100
+    let attempts = 0
+
+    while (attempts < MAX_ATTEMPTS) {
+        attempts++
+        const playerTag = generatePlayerTag()
+
+        const existingUser = await prisma.user.findUnique({
+            where : { playerTag }
+        })
+
+        if (!existingUser) {
+            return playerTag
+        }
+    }
+
+    throw new Error("Failed to generate a new tag!");
+    
+}
+
+export {validatePlayerTag, generatePlayerTag, generatePlayerTagHelper}
 
 // function to generate a tag 
 // const generatePlayerTag = () => {
