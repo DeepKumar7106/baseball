@@ -1,4 +1,18 @@
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
+
 export default function PlayerProfile() {
+    const { user, isAuthenticated } = useAuth()
+    const navigate = useNavigate()
+
+    
+
+
+    if (!isAuthenticated) {
+        navigate('/login')
+        return
+    }
+
     return (
         <>
             <section className="player-profile-section">

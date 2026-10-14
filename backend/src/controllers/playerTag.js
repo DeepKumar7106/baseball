@@ -5,10 +5,7 @@ import { prisma } from "../lib/prisma.js"
  * 
  * @param String the unique player tag
  * @returns {@code true} if successful, {@code false} otherwise 
- */
-
-
-/**
+ * 
  * SYNTAX : aaa1a11x
  * a : alphabets in the list [a, b, c, d, ...., y, z]
  * 1 : digits in the list [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -74,6 +71,9 @@ const characterMap = {
 // function to validate a player tag using checksum
 const validatePlayerTag = (playerTag) => {
     const playerTagList = String(playerTag).split('')
+    if (playerTag.length != 8) {
+        return false
+    }
     const lastIndex = playerTagList.length - 1
     const checkBit = playerTagList[lastIndex]
     const checkSum = 75
